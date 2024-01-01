@@ -1,9 +1,8 @@
 const jwt = require("jsonwebtoken");
 
 const adminMiddleware = (req, res, next) => {
-  const token = req.headers.authorization;
-
   try {
+    const token = req.headers.authorization;
     if (!token) {
       res.status(401).json({ msg: "Unauthenticated!" });
     }

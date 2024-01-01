@@ -1,28 +1,43 @@
 const mongoose = require("mongoose");
-// require("dotenv").config();
 
-mongoose.connect(process.env.MONGO);
+mongoose
+  .connect(process.env.MONGO)
+  .then(() => {
+    console.log("Connected to mongodb successfully!");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
-const UserSchema = new mongoose.Schema({
-  username: String,
-  email: String,
-  password: String,
-});
+const UserSchema = new mongoose.Schema(
+  {
+    username: String,
+    email: String,
+    password: String,
+  },
+  { timestamps: true }
+);
 
-const AdminSchema = new mongoose.Schema({
-  username: String,
-  email: String,
-  password: String,
-});
+const AdminSchema = new mongoose.Schema(
+  {
+    username: String,
+    email: String,
+    password: String,
+  },
+  { timestamps: true }
+);
 
-const ProductSchema = new mongoose.Schema({
-  title: String,
-  description: String,
-  price: Number,
-  imageLink: String,
-  rating: Number,
-  category: String,
-});
+const ProductSchema = new mongoose.Schema(
+  {
+    title: String,
+    description: String,
+    price: Number,
+    imageLink: String,
+    rating: Number,
+    category: String,
+  },
+  { timestamps: true }
+);
 
 const User = mongoose.model("User", UserSchema);
 const Admin = mongoose.model("Admin", AdminSchema);
