@@ -1,9 +1,10 @@
 const express = require("express");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
-const adminRouter = require("./routes/admin.route");
-const userRouter = require("./routes/user.route");
-// const productRouter = require("./routes/product");
+const adminRouter = require("./routes/adminRoute");
+const userRouter = require("./routes/userRoute");
+const productRouter = require("./routes/productRoute");
+const refreshToken = require("./controllers/refreshToken.controller");
 
 const app = express();
 
@@ -12,10 +13,10 @@ app.use(cookieParser());
 
 app.use("/api/admin", adminRouter);
 app.use("/api/user", userRouter);
-// app.use("/api/product", productRouter);
+app.use("/api/products", productRouter);
 
-app.get("/", (req, res) => {
-  res.json("Hello");
+app.get("/", async (req, res) => {
+  res.send("hi");
 });
 
 app.use((err, req, res, next) => {
