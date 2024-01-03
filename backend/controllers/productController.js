@@ -1,4 +1,4 @@
-const getCategory = async (req, res, next) => {
+const getCategory = async (req, res) => {
   res.send("hi");
 };
 

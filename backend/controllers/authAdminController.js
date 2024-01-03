@@ -42,7 +42,7 @@ const signup = async (req, res) => {
   }
 };
 
-const login = async (req, res, next) => {
+const login = async (req, res) => {
   try {
     const validatedRequest = loginSchema.safeParse(req.body);
     if (validatedRequest.success) {
@@ -73,7 +73,6 @@ const login = async (req, res, next) => {
           );
 
           const updateAdmin = { refreshToken, ...isExists._doc };
-          console.log(updateAdmin);
           const loggedIn = await Admin.findOneAndUpdate(
             { username: isExists.username },
             updateAdmin,
@@ -109,4 +108,48 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = { signup, login };
+const logout = async (req, res) => {
+  try {
+    console.log(req.cookies);
+    const cookies = req.cookies;
+    if (!cookies?.refreshToken) {
+      console.log("if");
+      res.sendStatus(204);
+    } else {
+      console.log("else");
+      const refreshToken = cookies.refreshToken;
+      console.log(refreshToken);
+      const isExists = await Admin.findOne({ refreshToken: refreshToken });
+      console.log(isExists);
+      if (!isExists) {
+        console.log("no");
+        res
+          .clearCookie("refreshToken", {
+            httpOnly: true,
+            sameSite: "None",
+            secure: true,
+          })
+          .sendStatus(204);
+      } else {
+        const updatedAdmin = await Admin.updateOne(
+          { refreshToken },
+          { refreshToken: "", ...isExists._doc }
+        );
+        console.log("hi");
+        console.log(updatedAdmin);
+        res
+          .clearCookie("refreshToken", {
+            httpOnly: true,
+            sameSite: "None",
+            secure: true,
+          })
+          .sendStatus(204);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ msg: "Incorrect inputs!" });
+  }
+};
+
+module.exports = { signup, login, logout };

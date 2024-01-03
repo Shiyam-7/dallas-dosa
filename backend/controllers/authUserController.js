@@ -41,7 +41,7 @@ const signup = async (req, res) => {
     res.status(400).json({ msg: "Incorrect inputs!" });
   }
 };
-const login = async (req, res, next) => {
+const login = async (req, res) => {
   try {
     const validatedRequest = loginSchema.safeParse(req.body);
     if (validatedRequest.success) {
@@ -71,18 +71,16 @@ const login = async (req, res, next) => {
             { expiresIn: "1d" }
           );
 
-          const updateAdmin = { refreshToken, ...isExists._doc };
-          console.log(updateAdmin);
-          const loggedIn = await Admin.findOneAndUpdate(
+          const loginUser = await User.findOneAndUpdate(
             { username: isExists.username },
-            updateAdmin,
+            { ...isExists._doc, refreshToken },
             { new: true }
           );
 
-          if (!loggedIn) {
+          if (!loginUser) {
             res
               .status(500)
-              .json({ msg: "Oops!! Something wrong on our side!" });
+              .json({ msg: "Oops!! Something went wrong on our side!" });
           } else {
             res
               .status(200)
@@ -108,4 +106,46 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = { signup, login };
+const logout = async (req, res) => {
+  try {
+    const cookies = req.cookies;
+    if (!cookies?.refreshToken) {
+      res.sendStatus(204);
+    } else {
+      const refreshToken = cookies.refreshToken;
+      const isExists = await User.findOne({ refreshToken });
+      if (!isExists) {
+        res
+          .clearCookie("refreshToken", {
+            httpOnly: true,
+            sameSite: "None",
+            secure: true,
+          })
+          .sendStatus(204);
+      } else {
+        const updateUser = await User.findOneAndUpdate(
+          { refreshToken },
+          { ...isExists._doc, refreshToken: "" },
+          { new: true }
+        );
+        if (!updateUser) {
+          res
+            .status(500)
+            .json({ msg: "Oops!! Something went wrong on our side!" });
+        } else {
+          res
+            .clearCookie("refreshToken", {
+              httpOnly: true,
+              sameSite: "None",
+              secure: true,
+            })
+            .sendStatus(204);
+        }
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ msg: "Incorrect inputs!" });
+  }
+};
+module.exports = { signup, login, logout };
