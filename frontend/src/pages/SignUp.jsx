@@ -1,0 +1,112 @@
+import React from "react";
+import signup from "../assets/images/sign-up.png";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { register } from "../redux/authSlice";
+import { useDispatch } from "react-redux";
+
+export default function SignUP() {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`http://localhost:3000/auth/register`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      const data = await res.json();
+      dispatch(register(data));
+      navigate("/");
+    } catch (error) {
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 3000);
+    }
+  };
+  return (
+    <div className="flex flex-col my-10 items-center justify-center text-white">
+      <p className="text-3xl font-semibold">Registration</p>
+      <div className="flex my-10">
+        <div className="flex flex-col mx-10 gap-10">
+          <div className="flex flex-col gap-3">
+            <p className="font-semibold text-2xl">Register with Dallas Dosa</p>
+            <p className="text-gray-300 text-sm">
+              Welcome! Register below to unlock exclusive benefits
+            </p>
+          </div>
+          <form onSubmit={handleSignup}>
+            <div className="flex flex-col gap-5">
+              <label className="font-semibold">User Name</label>
+              <input
+                className="appearance-none bg-transparent border border-amber-400  focus:outline-none p-3 rounded-md"
+                type="text"
+                placeholder="Enter Your Name"
+                onChange={(e) => setUsername(e.target.value)}
+              ></input>
+              <label className="font-semibold">Email Address</label>
+              <input
+                className="appearance-none bg-transparent border border-amber-400  focus:outline-none p-3 rounded-md"
+                type="email"
+                placeholder="Enter Email Id"
+                onChange={(e) => setEmail(e.target.value)}
+              ></input>
+              <label className="font-semibold">Password</label>
+              <input
+                type="password"
+                className="appearance-none bg-transparent border border-amber-400  focus:outline-none p-3 rounded-md"
+                placeholder="Type Your Password Here"
+                onChange={(e) => setPassword(e.target.value)}
+              ></input>
+              <div className="flex justify-between">
+                <div className="flex">
+                  <input
+                    className=" h-5 w-5 cursor-pointer rounded-md"
+                    type="checkbox"
+                  />
+                  <p className="ml-2 text-gray-300">Remember me!</p>
+                </div>
+                <div>
+                  <p className="text-gray-300">Forgot Password?</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col items-center mt-5 gap-5">
+              <button className="w-auto bg-amber-400 hover:opacity-95 py-1 px-7 rounded-2xl">
+                Register
+              </button>
+              <p>
+                Returning user?{" "}
+                <Link to={"/sign-in"}>
+                  <span className="font-bold">Log in now.</span>
+                </Link>
+              </p>
+            </div>
+          </form>
+          {error && (
+            <div className="text-red-700">
+              Wrong credentials! Try different ones.
+            </div>
+          )}
+        </div>
+        <div>
+          <img
+            className="w-[29rem] h-[36rem] mx-10"
+            src={signup}
+            alt="sign up image"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
