@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import signin from "../assets/images/sign-in.png";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -7,7 +8,7 @@ import { login } from "../redux/authSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function SignUP() {
+export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
@@ -16,22 +17,24 @@ export default function SignUP() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
-      const res = await fetch(`http://localhost:3000/auth/login`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-      console.log(data);
-      dispatch(login(data));
-      toast.success("Logged In Successfully!");
-      navigate("/");
+      await axios
+        .post("http://localhost:3000/api/auth/login", {
+          email,
+          password,
+        })
+        .then((data) => {
+          console.log(data.data);
+          localStorage.setItem("accessToken", data.data.accessToken);
+          dispatch(login(data.data));
+          toast.success("Logged In Successfully!");
+          navigate("/");
+        })
+        .catch((err) => {
+          console.log(err.response.data.msg);
+        });
     } catch (error) {
+      console.log(error);
       setError(true);
       setTimeout(() => {
         setError(false);

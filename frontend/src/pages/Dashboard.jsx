@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/authSlice";
@@ -15,10 +16,15 @@ export default function Dashboard() {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch("http://localhost:3000/auth/logout");
-      const data = await res.json();
-      dispatch(logout());
-      console.log(data);
+      await axios
+        .get("http://localhost:3000/api/auth/logout")
+        .then((data) => {
+          dispatch(logout());
+          console.log(data);
+        })
+        .catch((err) => {
+          console.log(err.response.data.msg);
+        });
     } catch (error) {
       console.log(error);
     }

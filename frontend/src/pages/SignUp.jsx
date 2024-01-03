@@ -1,13 +1,14 @@
 import React from "react";
+import axios from "axios";
 import signup from "../assets/images/sign-up.png";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { register } from "../redux/authSlice";
 import { useDispatch } from "react-redux";
 
 export default function SignUP() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
@@ -16,18 +17,22 @@ export default function SignUP() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:3000/auth/register`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify({ username, email, password }),
-      });
-
-      const data = await res.json();
-      dispatch(register(data));
-      navigate("/");
+      await axios
+        .post("http://localhost:3000/api/auth/signup", {
+          username,
+          email,
+          address,
+          password,
+        })
+        .then((data) => {
+          console.log(data.data.msg);
+          navigate("/sign-in");
+        })
+        .catch((err) => {
+          console.log(err.response.data.msg);
+        });
     } catch (error) {
+      console.log(error);
       setError(true);
       setTimeout(() => {
         setError(false);
@@ -60,6 +65,13 @@ export default function SignUP() {
                 type="email"
                 placeholder="Enter Email Id"
                 onChange={(e) => setEmail(e.target.value)}
+              ></input>
+              <label className="font-semibold">Address</label>
+              <input
+                className="appearance-none bg-transparent border border-amber-400  focus:outline-none p-3 rounded-md"
+                type="text"
+                placeholder="Enter Address"
+                onChange={(e) => setAddress(e.target.value)}
               ></input>
               <label className="font-semibold">Password</label>
               <input
@@ -99,9 +111,9 @@ export default function SignUP() {
             </div>
           )}
         </div>
-        <div>
+        <div className="flex items-center justify-center">
           <img
-            className="w-[29rem] h-[36rem] mx-10"
+            className="w-[29rem] h-[36rem] mx-10 "
             src={signup}
             alt="sign up image"
           />

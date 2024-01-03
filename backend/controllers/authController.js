@@ -7,12 +7,13 @@ const signup = async (req, res) => {
   try {
     const validatedRequest = signupSchema.safeParse(req.body);
     if (validatedRequest.success) {
-      const isExists = await User.findOne({
+      const emailExists = await User.findOne({
         email: req.body.email,
+      });
+      const usernameExists = await User.findOne({
         username: req.body.username,
       });
-
-      if (isExists) {
+      if (emailExists || usernameExists) {
         res.status(409).json({ msg: "User already exists!" });
       } else {
         const hashedPassword = bcryptjs.hashSync(req.body.password, 10);
@@ -28,7 +29,8 @@ const signup = async (req, res) => {
             .status(500)
             .json({ msg: "Oops!! Something went wrong on our side!" });
         } else {
-          res.status(200).json({ msg: "User created successfully!" });
+          const { password, roles, ...userInfo } = newUser._doc;
+          res.status(200).json({ msg: "User created successfully!", userInfo });
         }
       }
     } else {
@@ -48,12 +50,13 @@ const login = async (req, res) => {
     if (validatedRequest.success) {
       const isExists = await User.findOne({
         email: req.body.email,
-        username: req.body.username,
       });
 
       if (!isExists) {
+        console.log("if");
         res.status(401).json({ msg: "Unauthenticated!" });
       } else {
+        console.log("else");
         const validPassword = bcryptjs.compareSync(
           req.body.password,
           isExists.password
@@ -84,6 +87,8 @@ const login = async (req, res) => {
               .status(500)
               .json({ msg: "Oops!! Something went wrong on our side!" });
           } else {
+            const { password, roles, refreshToken, ...userInfo } =
+              isExists._doc;
             res
               .status(200)
               .cookie("refreshToken", refreshToken, {
@@ -92,7 +97,7 @@ const login = async (req, res) => {
                 secure: true,
                 maxAge: 24 * 60 * 60 * 1000,
               })
-              .json({ accessToken });
+              .json({ accessToken, userInfo });
           }
         }
       }

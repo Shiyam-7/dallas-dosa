@@ -10,12 +10,8 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      state.user = action.payload.others;
-      state.token = action.payload.token;
-    },
-    register: (state, action) => {
-      state.user = action.payload.others;
-      state.token = action.payload.token;
+      state.user = action.payload.userInfo;
+      state.token = action.payload.accessToken;
     },
     logout: (state) => {
       state.user = null;
@@ -25,10 +21,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { login, register, logout } = authSlice.actions;
+export const { login, logout } = authSlice.actions;
 
 export default authSlice.reducer;
-
-// store is composed of several slices,
-// each slice contain specific login (auth slice for auth)
-// or cart slice for cart logic
