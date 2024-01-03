@@ -1,17 +1,26 @@
 const router = require("express").Router();
+const { authMiddleware } = require("../middlewares/authMiddleware");
 const {
-  adminMiddleware,
-  userMiddleware,
-} = require("../middlewares/authMiddleware");
-const getCategory = require("../controllers/productController");
+  createProduct,
+  getAllProducts,
+  getOneProduct,
+} = require("../controllers/productController");
 const verifyRoles = require("../middlewares/verifyRoles");
 const rolesList = require("../config/rolesList");
 
+router.get("/", authMiddleware, verifyRoles(rolesList.Admin), getAllProducts);
+
+router.post(
+  "/create",
+  authMiddleware,
+  verifyRoles(rolesList.Admin),
+  createProduct
+);
 router.get(
-  "/category",
-  userMiddleware,
-  verifyRoles(rolesList.User),
-  getCategory
+  "/find/:id",
+  authMiddleware,
+  verifyRoles(rolesList.Admin),
+  getOneProduct
 );
 
 module.exports = router;
