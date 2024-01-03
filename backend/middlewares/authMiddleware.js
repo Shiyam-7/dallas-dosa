@@ -25,16 +25,17 @@ const adminMiddleware = (req, res, next) => {
 const userMiddleware = (req, res, next) => {
   try {
     const token = req.headers.authorization;
-    if (!token) {
+    if (!token?.startsWith("Bearer ")) {
       res.sendStatus(401);
-    }
-    if (token && token.startsWith("Bearer ")) {
+    } else {
       const jwtToken = token.split(" ")[1];
       const decoded = jwt.verify(jwtToken, process.env.ACCESS_TOKEN_SECRET);
-      if (decoded.username) {
-        req.user = decoded.username;
+      if (decoded.UserInfo.username) {
+        req.user = decoded.UserInfo.username;
+        req.roles = decoded.UserInfo.roles;
         next();
       } else {
+        console.log("if");
         res.sendStatus(403);
       }
     }

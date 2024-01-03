@@ -8,9 +8,7 @@ const refreshToken = async (req, res) => {
       res.sendStatus(401);
     } else {
       const refreshToken = cookies.refreshToken;
-      console.log(refreshToken);
       const isExists = await User.findOne({ refreshToken });
-      console.log(isExists);
       if (!isExists) {
         res.sendStatus(403);
       } else {
@@ -21,8 +19,9 @@ const refreshToken = async (req, res) => {
         if (decoded.username !== isExists.username) {
           res.sendStatus(403);
         } else {
+          const roles = Object.values(isExists.roles);
           const accessToken = jwt.sign(
-            { username: decoded.username },
+            { UserInfo: { username: decoded.username, roles } },
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: "10m" }
           );

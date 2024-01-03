@@ -12,6 +12,7 @@ mongoose
 const UserSchema = new mongoose.Schema(
   {
     username: String,
+    roles: Object,
     email: String,
     address: String,
     password: String,
@@ -23,6 +24,7 @@ const UserSchema = new mongoose.Schema(
 const AdminSchema = new mongoose.Schema(
   {
     username: String,
+    roles: Object,
     email: String,
     address: String,
     password: String,

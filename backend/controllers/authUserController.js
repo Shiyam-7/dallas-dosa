@@ -18,6 +18,7 @@ const signup = async (req, res) => {
         const hashedPassword = bcryptjs.hashSync(req.body.password, 10);
         const newUser = await User.create({
           username: req.body.username,
+          roles: { User: 2001 },
           email: req.body.email,
           address: req.body.address,
           password: hashedPassword,
@@ -60,8 +61,9 @@ const login = async (req, res) => {
         if (!validPassword) {
           res.status(401).json({ msg: "Invalid password!" });
         } else {
+          const roles = Object.values(isExists.roles);
           const accessToken = jwt.sign(
-            { username: isExists.username },
+            { UserInfo: { username: isExists.username, roles } },
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: "10m" }
           );
