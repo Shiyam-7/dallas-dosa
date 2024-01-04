@@ -17,7 +17,7 @@ export default function Dashboard() {
   const handleLogout = async () => {
     try {
       await axios
-        .get("http://localhost:3000/api/auth/logout")
+        .get("http://localhost:3000/api/auth/logout", { withCredentials: true })
         .then((data) => {
           dispatch(logout());
           console.log(data);

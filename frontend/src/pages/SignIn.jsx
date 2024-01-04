@@ -19,10 +19,14 @@ export default function SignIn() {
     e.preventDefault();
     try {
       await axios
-        .post("http://localhost:3000/api/auth/login", {
-          email,
-          password,
-        })
+        .post(
+          "http://localhost:3000/api/auth/login",
+          {
+            email,
+            password,
+          },
+          { withCredentials: true }
+        )
         .then((data) => {
           console.log(data.data);
           localStorage.setItem("accessToken", data.data.accessToken);

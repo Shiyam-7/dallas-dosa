@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/authSlice";
 
@@ -8,10 +9,15 @@ export default function Profile() {
   console.log(user);
   const handleLogout = async () => {
     try {
-      const res = await fetch("http://localhost:3000/auth/logout");
-      const data = await res.json();
-      dispatch(logout());
-      console.log(data);
+      await axios
+        .get("http://localhost:3000/api/auth/logout", { withCredentials: true })
+        .then((data) => {
+          dispatch(logout());
+          console.log(data);
+        })
+        .catch((err) => {
+          console.log(err.response.data.msg);
+        });
     } catch (error) {
       console.log(error);
     }
@@ -36,11 +42,20 @@ export default function Profile() {
             />
           </div>
           <div className="flex gap-5 items-center justify-between">
-            <p className="">Email Address:</p>
+            <p className="">Email:</p>
             <input
               disabled
               className="w-fit appearance-none bg-transparent border border-amber-400  focus:outline-none p-1 rounded-md"
               value={user.email}
+              type="text"
+            />
+          </div>
+          <div className="flex gap-5 items-center justify-between">
+            <p className="">Address:</p>
+            <input
+              disabled
+              className="w-fit appearance-none bg-transparent border border-amber-400  focus:outline-none p-1 rounded-md"
+              value={user.address}
               type="text"
             />
           </div>

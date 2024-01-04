@@ -53,10 +53,8 @@ const login = async (req, res) => {
       });
 
       if (!isExists) {
-        console.log("if");
         res.status(401).json({ msg: "Unauthenticated!" });
       } else {
-        console.log("else");
         const validPassword = bcryptjs.compareSync(
           req.body.password,
           isExists.password
@@ -89,6 +87,7 @@ const login = async (req, res) => {
           } else {
             const { password, roles, refreshToken, ...userInfo } =
               isExists._doc;
+            console.log("1");
             res
               .status(200)
               .cookie("refreshToken", refreshToken, {
@@ -117,11 +116,14 @@ const logout = async (req, res) => {
   try {
     const cookies = req.cookies;
     if (!cookies?.refreshToken) {
+      console.log("!cookies?.refreshToken");
       res.sendStatus(204);
     } else {
+      console.log("else");
       const refreshToken = cookies.refreshToken;
       const isExists = await User.findOne({ refreshToken });
       if (!isExists) {
+        console.log("!isExists");
         res
           .clearCookie("refreshToken", {
             httpOnly: true,
@@ -130,16 +132,19 @@ const logout = async (req, res) => {
           })
           .sendStatus(204);
       } else {
+        console.log("else");
         const updateUser = await User.findOneAndUpdate(
           { refreshToken },
           { ...isExists._doc, refreshToken: "" },
           { new: true }
         );
         if (!updateUser) {
+          console.log("!updateUser");
           res
             .status(500)
             .json({ msg: "Oops!! Something went wrong on our side!" });
         } else {
+          console.log("else");
           res
             .clearCookie("refreshToken", {
               httpOnly: true,
