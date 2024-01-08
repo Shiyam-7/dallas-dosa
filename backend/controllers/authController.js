@@ -73,7 +73,6 @@ const login = async (req, res) => {
             process.env.REFRESH_TOKEN_SECRET,
             { expiresIn: "1d" }
           );
-
           const loginUser = await User.findOneAndUpdate(
             { username: isExists.username },
             { ...isExists._doc, refreshToken },
@@ -85,9 +84,6 @@ const login = async (req, res) => {
               .status(500)
               .json({ msg: "Oops!! Something went wrong on our side!" });
           } else {
-            const { password, roles, refreshToken, ...userInfo } =
-              isExists._doc;
-            console.log("1");
             res
               .status(200)
               .cookie("refreshToken", refreshToken, {
@@ -96,7 +92,7 @@ const login = async (req, res) => {
                 secure: true,
                 maxAge: 24 * 60 * 60 * 1000,
               })
-              .json({ accessToken, userInfo });
+              .json({ accessToken });
           }
         }
       }
@@ -116,14 +112,11 @@ const logout = async (req, res) => {
   try {
     const cookies = req.cookies;
     if (!cookies?.refreshToken) {
-      console.log("!cookies?.refreshToken");
       res.sendStatus(204);
     } else {
-      console.log("else");
       const refreshToken = cookies.refreshToken;
       const isExists = await User.findOne({ refreshToken });
       if (!isExists) {
-        console.log("!isExists");
         res
           .clearCookie("refreshToken", {
             httpOnly: true,
@@ -132,19 +125,16 @@ const logout = async (req, res) => {
           })
           .sendStatus(204);
       } else {
-        console.log("else");
         const updateUser = await User.findOneAndUpdate(
           { refreshToken },
           { ...isExists._doc, refreshToken: "" },
           { new: true }
         );
         if (!updateUser) {
-          console.log("!updateUser");
           res
             .status(500)
             .json({ msg: "Oops!! Something went wrong on our side!" });
         } else {
-          console.log("else");
           res
             .clearCookie("refreshToken", {
               httpOnly: true,

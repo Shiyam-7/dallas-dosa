@@ -12,7 +12,6 @@ import { MdOutlineFoodBank } from "react-icons/md";
 export default function Dashboard() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  console.log(user);
 
   const handleLogout = async () => {
     try {

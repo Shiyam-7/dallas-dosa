@@ -1,30 +1,5 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import authSlice from "./authSlice";
-import cartSlice from "./cartSlice";
-import menuSlice from "./menuSlice";
-
-const persistConfig = {
-  key: "root",
-  version: 1,
-  storage,
-};
-
-const reducers = combineReducers({
-  auth: authSlice,
-  cart: cartSlice,
-  menu: menuSlice,
-});
-
-const persistedReducer = persistReducer(persistConfig, reducers);
+import { configureStore } from "@reduxjs/toolkit";
 
 export const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
+  reducer: {},
 });
-
-export let persistor = persistStore(store);

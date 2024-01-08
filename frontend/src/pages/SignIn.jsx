@@ -28,7 +28,6 @@ export default function SignIn() {
           { withCredentials: true }
         )
         .then((data) => {
-          console.log(data.data);
           localStorage.setItem("accessToken", data.data.accessToken);
           dispatch(login(data.data));
           toast.success("Logged In Successfully!");

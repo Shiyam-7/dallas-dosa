@@ -12,4 +12,13 @@ const loginSchema = zod.object({
   password: zod.string().min(8),
 });
 
-module.exports = { signupSchema, loginSchema };
+const productSchema = zod.object({
+  title: zod.string().min(1).max(50),
+  description: zod.string().min(1).max(1000),
+  price: zod.number().nonnegative(),
+  imageLink: zod.string().min(1),
+  rating: zod.number().nonnegative(),
+  category: zod.string().min(1).max(50),
+});
+
+module.exports = { signupSchema, loginSchema, productSchema };

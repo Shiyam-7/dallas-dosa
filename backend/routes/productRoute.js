@@ -11,7 +11,7 @@ const rolesList = require("../config/rolesList");
 router.get("/", authMiddleware, verifyRoles(rolesList.Admin), getAllProducts);
 
 router.post(
-  "/create",
+  "/create-product",
   authMiddleware,
   verifyRoles(rolesList.Admin),
   createProduct

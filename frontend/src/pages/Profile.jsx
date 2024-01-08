@@ -6,7 +6,6 @@ import { logout } from "../redux/authSlice";
 export default function Profile() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  console.log(user);
   const handleLogout = async () => {
     try {
       await axios
@@ -30,37 +29,17 @@ export default function Profile() {
       <div className="flex justify-center items-center w-full">
         <p className="uppercase font-semibold text-xl">Hey {user.username}!</p>
       </div>
-      <div className="flex">
-        <div className="flex flex-col gap-5 ">
-          <div className="flex gap-5 items-center justify-between">
-            <p>Username:</p>
-            <input
-              disabled
-              className="w-fit appearance-none bg-transparent border border-amber-400  focus:outline-none p-1 rounded-md"
-              value={user.username}
-              type="text"
-            />
-          </div>
-          <div className="flex gap-5 items-center justify-between">
-            <p className="">Email:</p>
-            <input
-              disabled
-              className="w-fit appearance-none bg-transparent border border-amber-400  focus:outline-none p-1 rounded-md"
-              value={user.email}
-              type="text"
-            />
-          </div>
-          <div className="flex gap-5 items-center justify-between">
-            <p className="">Address:</p>
-            <input
-              disabled
-              className="w-fit appearance-none bg-transparent border border-amber-400  focus:outline-none p-1 rounded-md"
-              value={user.address}
-              type="text"
-            />
-          </div>
+      <div className="flex gap-5 items-center justify-center">
+        <div className="flex gap-4 flex-col">
+          <p>Username:</p>
+          <p>Email:</p>
+          <p>Address:</p>
         </div>
-        <div className=""></div>
+        <div className="flex gap-4 flex-col">
+          <p>{user.username}</p>
+          <p>{user.email}</p>
+          <p>{user.address}</p>
+        </div>
       </div>
       <div className="flex justify-center items-center w-full">
         <button
