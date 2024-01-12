@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const {
-  createOrder,
-  payForOrder,
+  newOrder,
+  payment,
   getCurrentOrders,
   orderDelivered,
   newOrderForCurrentUser,
@@ -14,13 +14,13 @@ const Product = require("../db");
 const User = require("../db");
 
 router.post(
-  "/create",
+  "/new-order",
   authMiddleware,
   verifyRoles(rolesList.User),
-  createOrder
+  newOrder
 );
 
-router.put("/pay", authMiddleware, verifyRoles(rolesList.User), payForOrder);
+router.patch("/payment", authMiddleware, verifyRoles(rolesList.User), payment);
 
 router.get(
   "/getCurrentOrders",
@@ -46,7 +46,7 @@ router.get(
 router.get(
   "/track-order/:id",
   authMiddleware,
-  verifyRoles(rolesList.Admin),
+  verifyRoles(rolesList.User),
   trackOrder
 );
 

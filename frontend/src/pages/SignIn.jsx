@@ -4,46 +4,30 @@ import signin from "../assets/images/sign-in.png";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../redux/authSlice";
+import { useLoginMutation } from "../redux/apiSlices/authApiSlice.js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { setCredentials } from '../redux/slices/authSlice.js'
 
 export default function SignIn() {
+  const [login, { isLoading }] = useLoginMutation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await axios
-        .post(
-          "http://localhost:3000/api/auth/login",
-          {
-            email,
-            password,
-          },
-          { withCredentials: true }
-        )
-        .then((data) => {
-          localStorage.setItem("accessToken", data.data.accessToken);
-          dispatch(login(data.data));
-          toast.success("Logged In Successfully!");
-          navigate("/");
-        })
-        .catch((err) => {
-          console.log(err.response.data.msg);
-        });
+      const { accessToken } = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ accessToken }));
+      setEmail("");
+      setPassword("");
+      navigate("/");
     } catch (error) {
       console.log(error);
-      setError(true);
-      setTimeout(() => {
-        setError(false);
-      }, 3000);
-    }
-  };
+    };
+  }
   return (
     <div className="flex flex-col my-10 items-center justify-center text-white">
       <p className="text-3xl font-semibold">Login</p>
@@ -62,6 +46,7 @@ export default function SignIn() {
                 className="appearance-none bg-transparent border border-amber-400  focus:outline-none p-3 rounded-md"
                 type="email"
                 placeholder="Enter Email Id"
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
               ></input>
               <label className="font-semibold">Password</label>
@@ -69,6 +54,7 @@ export default function SignIn() {
                 type="password"
                 className="appearance-none bg-transparent border border-amber-400  focus:outline-none p-3 rounded-md"
                 placeholder="Type Your Password Here"
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
               ></input>
               <div className="flex justify-between">
@@ -96,11 +82,11 @@ export default function SignIn() {
               </p>
             </div>
           </form>
-          {error && (
-            <div className="text-red-700">
-              Wrong credentials! Try different ones
-            </div>
-          )}
+          {/* {error && ( */}
+          {/*   <div className="text-red-700"> */}
+          {/*     Wrong credentials! Try different ones */}
+          {/*   </div> */}
+          {/* )} */}
         </div>
         <div>
           <img

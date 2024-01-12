@@ -46,7 +46,7 @@ const ProductSchema = new mongoose.Schema(
 );
 
 const OrderSchema = new mongoose.Schema({
-  name: String,
+  username: String,
   address: String,
   addressLatLng: {
     lat: String,
@@ -57,7 +57,6 @@ const OrderSchema = new mongoose.Schema({
   products: Array,
   paymentStatus: { type: String, default: "UNPAID" },
   orderStatus: { type: String, default: "NEW" },
-  user: mongoose.Schema.Types.ObjectId,
 });
 
 const User = mongoose.model("User", UserSchema);

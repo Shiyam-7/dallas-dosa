@@ -21,4 +21,15 @@ const productSchema = zod.object({
   category: zod.string().min(1).max(50),
 });
 
-module.exports = { signupSchema, loginSchema, productSchema };
+const orderSchema = zod.object({
+  username: zod.string().min(1).max(50),
+  address: zod.string().min(1).max(500),
+  addressLatLng: zod.object({
+    lat: zod.string().min(1),
+    lng: zod.string().min(1),
+  }),
+  totalPrice: zod.number().nonnegative(),
+  products: zod.array(),
+});
+
+module.exports = { signupSchema, loginSchema, productSchema, orderSchema };

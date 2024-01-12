@@ -1,54 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Card from "../components/Card";
 import regularDosa from "../assets/images/regular-dosa.png";
-import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoStarSharp } from "react-icons/io5";
 import { MdAdd } from "react-icons/md";
+import { useGetProductsQuery } from "../redux/apiSlices/productsApiSlice";
+
 
 export default function Menu() {
+  const { data: products, isLoading, isSuccess, isError, error } = useGetProductsQuery();
+  console.log(products)
+  let content;
+  if (isLoading) content = <p>loading...</p>
+  if (isError) content = <p>{error?.data?.message}</p>
   const navigate = useNavigate();
-  const [filteredFoods, setFilteredFoods] = useState([]);
-  const location = useLocation();
-  const foodEndpoint = location.pathname.split("/")[2];
-  const { token } = useSelector((state) => state.auth);
+  const { category } = useParams();
+  if (isSuccess) {
+    const { ids } = products
 
-  useEffect(() => {
-    const fetchFoodType = async () => {
-      const res = await fetch(
-        `http://localhost:3000/product?category=${foodEndpoint}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const data = await res.json();
-      setFilteredFoods(data);
-    };
-    fetchFoodType();
-  }, [foodEndpoint]);
-  return (
-    <div className="flex flex-col text-white">
-      <div className="flex gap-2 flex-col w-full items-center justify-center text-center">
-        <div className="my-10">
-          <p className="text-4xl font-bold">Our Menu</p>
-        </div>
-        <div className="text-2xl font-bold">
-          <p>Pick and Try out</p>
-        </div>
-        <div className="w-[770px]">
-          <p>
-            Food, in the end, in our tradition, is something holy. It's not
-            about nutrients and calories. It's about sharing. It's about
-            honesty. It's about identity
-          </p>
-        </div>
-      </div>
-      {filteredFoods.length !== 0 && (
+    {
+      products.length !== 0 && (
         <div className="flex mt-16 gap-[500px] items-center w-full justify-center ">
           <div className="flex">
             <div className="flex border border-amber-400 py-1 px-10 items-center gap-3">
@@ -61,7 +33,7 @@ export default function Menu() {
               </div>
               <div className="">
                 <p className="text-xl font-semibold">
-                  {foodEndpoint.charAt(0).toUpperCase() + foodEndpoint.slice(1)}
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
                 </p>
               </div>
             </div>
@@ -70,9 +42,11 @@ export default function Menu() {
             <p>Go to main menu</p>
           </div>
         </div>
-      )}
-      {filteredFoods.length !== 0 ? (
-        filteredFoods.map((item) => (
+      )
+    }
+    {
+      products.length !== 0 ? (
+        products.map((item) => (
           <div
             onClick={() => {
               navigate(`/food/${item._id}`);
@@ -108,12 +82,31 @@ export default function Menu() {
           </div>
         ))
       ) : (
-        <div className="flex w-ful my-20 justify-center items-center">
-          <p className="uppercase text-3xl">
-            no <span className="text-amber-400">{foodEndpoint}</span> right now!
+      <div className="flex w-ful my-20 justify-center items-center">
+        <p className="uppercase text-3xl">
+          no <span className="text-amber-400">{category}</span> right now!
+        </p>
+      </div>
+    )
+    }
+  }
+  return (
+    <div className="flex flex-col text-white">
+      <div className="flex gap-2 flex-col w-full items-center justify-center text-center">
+        <div className="my-10">
+          <p className="text-4xl font-bold">Our Menu</p>
+        </div>
+        <div className="text-2xl font-bold">
+          <p>Pick and Try out</p>
+        </div>
+        <div className="w-[770px]">
+          <p>
+            Food, in the end, in our tradition, is something holy. It's not
+            about nutrients and calories. It's about sharing. It's about
+            honesty. It's about identity
           </p>
         </div>
-      )}
+      </div>
     </div>
   );
 }

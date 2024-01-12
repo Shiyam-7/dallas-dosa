@@ -2,13 +2,13 @@ const router = require("express").Router();
 const { authMiddleware } = require("../middlewares/authMiddleware");
 const {
   createProduct,
-  getAllProducts,
-  getOneProduct,
+  deleteProduct,
+  getProducts,
 } = require("../controllers/productController");
 const verifyRoles = require("../middlewares/verifyRoles");
 const rolesList = require("../config/rolesList");
 
-router.get("/", authMiddleware, verifyRoles(rolesList.Admin), getAllProducts);
+router.get("/", getProducts);
 
 router.post(
   "/create-product",
@@ -16,11 +16,12 @@ router.post(
   verifyRoles(rolesList.Admin),
   createProduct
 );
-router.get(
-  "/find/:id",
+
+router.delete(
+  "/delete-product",
   authMiddleware,
   verifyRoles(rolesList.Admin),
-  getOneProduct
+  deleteProduct
 );
 
 module.exports = router;

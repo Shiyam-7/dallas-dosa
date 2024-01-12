@@ -25,16 +25,14 @@ const signup = async (req, res) => {
           password: hashedPassword,
         });
         if (!newUser) {
-          res
-            .status(500)
-            .json({ msg: "Oops!! Something went wrong on our side!" });
+          res.status(500).json({ msg: "Oops!! Something went wrong!" });
         } else {
           const { password, roles, ...userInfo } = newUser._doc;
-          res.status(200).json({ msg: "User created successfully!", userInfo });
+          res.status(201).json({ msg: "User created successfully!", userInfo });
         }
       }
     } else {
-      res.status(401).json({
+      res.status(400).json({
         msg: "Invalid" + " " + validatedRequest.error.issues[0].path[0] + "!",
       });
     }
@@ -66,7 +64,7 @@ const login = async (req, res) => {
           const accessToken = jwt.sign(
             { UserInfo: { username: isExists.username, roles } },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: "10m" }
+            { expiresIn: "5m" }
           );
           const refreshToken = jwt.sign(
             { username: isExists.username },
