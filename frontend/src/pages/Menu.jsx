@@ -5,21 +5,28 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoStarSharp } from "react-icons/io5";
 import { MdAdd } from "react-icons/md";
-import { useGetProductsQuery } from "../redux/apiSlices/productsApiSlice";
 
 
 export default function Menu() {
-  const { data: products, isLoading, isSuccess, isError, error } = useGetProductsQuery();
-  console.log(products)
-  let content;
-  if (isLoading) content = <p>loading...</p>
-  if (isError) content = <p>{error?.data?.message}</p>
-  const navigate = useNavigate();
-  const { category } = useParams();
-  if (isSuccess) {
-    const { ids } = products
-
-    {
+  
+  return (
+    <div className="flex flex-col text-white">
+      <div className="flex gap-2 flex-col w-full items-center justify-center text-center">
+        <div className="my-10">
+          <p className="text-4xl font-bold">Our Menu</p>
+        </div>
+        <div className="text-2xl font-bold">
+          <p>Pick and Try out</p>
+        </div>
+        <div className="w-[770px]">
+          <p>
+            Food, in the end, in our tradition, is something holy. It's not
+            about nutrients and calories. It's about sharing. It's about
+            honesty. It's about identity
+          </p>
+        </div>
+      </div>
+      {
       products.length !== 0 && (
         <div className="flex mt-16 gap-[500px] items-center w-full justify-center ">
           <div className="flex">
@@ -89,24 +96,6 @@ export default function Menu() {
       </div>
     )
     }
-  }
-  return (
-    <div className="flex flex-col text-white">
-      <div className="flex gap-2 flex-col w-full items-center justify-center text-center">
-        <div className="my-10">
-          <p className="text-4xl font-bold">Our Menu</p>
-        </div>
-        <div className="text-2xl font-bold">
-          <p>Pick and Try out</p>
-        </div>
-        <div className="w-[770px]">
-          <p>
-            Food, in the end, in our tradition, is something holy. It's not
-            about nutrients and calories. It's about sharing. It's about
-            honesty. It's about identity
-          </p>
-        </div>
-      </div>
     </div>
   );
 }

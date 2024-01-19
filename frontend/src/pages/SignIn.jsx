@@ -4,30 +4,32 @@ import signin from "../assets/images/sign-in.png";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../redux/apiSlices/authApiSlice.js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { setCredentials } from '../redux/slices/authSlice.js'
+import { login } from '../redux/slices/authSlice.js'
 
 export default function SignIn() {
-  const [login, { isLoading }] = useLoginMutation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin =async()=>{
     try {
-      const { accessToken } = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ accessToken }));
-      setEmail("");
-      setPassword("");
-      navigate("/");
-    } catch (error) {
+      const response= await axios.post("http://localhost:3000/api/auth/login", {
+        email,
+        password,
+      })
+      console.log(response)
+      dispatch(login(response))
+      navigate('/')
+      } catch (error) {
       console.log(error);
-    };
+    }
   }
+ 
+  
   return (
     <div className="flex flex-col my-10 items-center justify-center text-white">
       <p className="text-3xl font-semibold">Login</p>
@@ -82,11 +84,11 @@ export default function SignIn() {
               </p>
             </div>
           </form>
-          {/* {error && ( */}
-          {/*   <div className="text-red-700"> */}
-          {/*     Wrong credentials! Try different ones */}
-          {/*   </div> */}
-          {/* )} */}
+          {error && (
+             <div className="text-red-700"> 
+             Wrong credentials! Try different ones 
+             </div> 
+          )}
         </div>
         <div>
           <img

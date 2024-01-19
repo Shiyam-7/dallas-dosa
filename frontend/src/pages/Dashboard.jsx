@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useSendLogoutMutation } from "../redux/apiSlices/authApiSlice"
 import { FaHistory } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
 import { BiSolidEdit } from "react-icons/bi";
@@ -9,16 +8,7 @@ import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { MdOutlineFoodBank } from "react-icons/md";
 
 export default function Dashboard() {
-  const [sendLogout, { isLoading, isSuccess, isError, error }] = useSendLogoutMutation();
   const navigate = useNavigate()
-
-  useEffect(() => {
-    if (isSuccess) navigate('/')
-  }, [isSuccess, navigate])
-
-  if (isLoading) return <p>Logging Out...</p>
-
-  if (isError) return <p>Error: {error.data?.message}</p>
 
   return (
     <div className="flex flex-col my-20 gap-6 text-white">

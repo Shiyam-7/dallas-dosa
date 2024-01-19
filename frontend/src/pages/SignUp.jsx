@@ -3,7 +3,6 @@ import axios from "axios";
 import signup from "../assets/images/sign-up.png";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
 export default function SignUP() {
   const [username, setUsername] = useState("");
@@ -11,7 +10,6 @@ export default function SignUP() {
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
