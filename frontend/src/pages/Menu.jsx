@@ -8,15 +8,24 @@ import { IoStarSharp } from "react-icons/io5";
 import { MdAdd } from "react-icons/md";
 
 export default function Menu() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [products, setProducts] = useState([]);
   const { category } = useParams();
 
   useEffect(() => {
+    setLoading(true);
     const fetchProducts = async () => {
-      const response = await axios.get("http://localhost:3000/api/products");
-      setProducts(response.data);
+      try {
+        const response = await axios.get("http://localhost:3000/api/products");
+        setProducts(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+        setError(true);
+      }
     };
-
     fetchProducts();
   }, []);
   return (
@@ -36,68 +45,71 @@ export default function Menu() {
           </p>
         </div>
       </div>
-      {products.length == 0 ? (
-        <p>loding...</p>
-      ) : (
-        <div className="flex mt-16 gap-[500px] items-center w-full justify-center ">
-          <div className="flex">
-            <div className="flex border border-amber-400 py-1 px-10 items-center gap-3">
-              <div className="">
-                <img
-                  className="w-[125px] h-[125px]"
-                  src={regularDosa}
-                  alt="dosa category image"
-                />
-              </div>
-              <div className="">
-                <p className="text-xl font-semibold">
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
-                </p>
-              </div>
+      <div className="flex mt-16 gap-[500px] items-center w-full justify-center ">
+        <div className="flex">
+          <div className="flex border border-amber-400 py-1 px-10 items-center gap-3">
+            <div className="">
+              <img
+                className="w-[125px] h-[125px]"
+                src={regularDosa}
+                alt="dosa category image"
+              />
             </div>
-          </div>
-          <div className="border flex justify-between items-center h-fit p-2 border-amber-400">
-            <p>Go to main menu</p>
+            <div className="">
+              <p className="text-xl font-semibold">
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+              </p>
+            </div>
           </div>
         </div>
-      )}
-      {console.log(products)}
-      {products.length !== 0 ? (
+        <div className="border flex justify-between items-center h-fit p-2 border-amber-400">
+          <p>Go to main menu</p>
+        </div>
+      </div>
+      {loading ? (
+        <p>loding...</p>
+      ) : error ? (
+        <p>error</p>
+      ) : products.length !== 0 ? (
         products.map((item) => (
-          <div
-            key={item._id}
-            onClick={() => {
-              navigate(`/food/${item._id}`);
-            }}
-            className="flex cursor-pointer w-full justify-center gap-10 my-20 flex-wrap"
-          >
-            <div className="flex flex-col p-3 text-white">
-              <div className="flex">
-                <img
-                  className="h-[250px] w-[300px] object-cover"
-                  src={`http://localhost:3000/images/${item.imageLink}`}
-                  alt="food item cover image"
-                />
-              </div>
-              <div className="pt-4  flex flex-col gap-5">
-                <div className="flex flex-col gap-2">
-                  <p className="font-bold">{item.title}</p>
-                  <div className="flex items-center ">
-                    <MdOutlineAttachMoney className=" h-7 w-7 fill-white" />
-                    <p className="font-semibold">{item.price}</p>
+          <>
+            {item.category === category && (
+              <div
+                key={item._id}
+                onClick={() => {
+                  navigate(`/food/${item._id}`);
+                }}
+                className="flex cursor-pointer w-full justify-center gap-10 my-20 flex-wrap"
+              >
+                <div className="flex flex-col p-3 text-white">
+                  <div className="flex">
+                    <img
+                      className="h-[250px] w-[300px] object-cover"
+                      src={`http://localhost:3000/images/${item.imageLink}`}
+                      alt="food item cover image"
+                    />
+                  </div>
+                  <div className="pt-4  flex flex-col gap-5">
+                    <div className="flex flex-col gap-2">
+                      <p className="font-bold">{item.title}</p>
+                      <div className="flex items-center ">
+                        <MdOutlineAttachMoney className=" h-7 w-7 fill-white" />
+                        <p className="font-semibold">{item.price}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <p className="mr-2">{item.rating}</p>
+                      <IoStarSharp className="fill-orange-600 mr-16" />
+                      <button className="flex border border-white rounded-md items-center p-1 font-semibold text-sm">
+                        ADD
+                        <MdAdd className="fill-white" />
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-center">
-                  <p className="mr-2">{item.rating}</p>
-                  <IoStarSharp className="fill-orange-600 mr-16" />
-                  <button className="flex border border-white rounded-md items-center p-1 font-semibold text-sm">
-                    ADD
-                    <MdAdd className="fill-white" />
-                  </button>
-                </div>
               </div>
-            </div>
-          </div>
+            )}
+          </>
         ))
       ) : (
         <div className="flex w-ful my-20 justify-center items-center">
