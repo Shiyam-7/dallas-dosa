@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import { logout } from "../redux/slices/authSlice";
 import { FaHistory } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
 import { BiSolidEdit } from "react-icons/bi";
@@ -8,7 +10,22 @@ import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { MdOutlineFoodBank } from "react-icons/md";
 
 export default function Dashboard() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/logout",
+        {
+          withCredentials: true,
+        }
+      );
+      dispatch(logout());
+      navigate("/sign-in");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="flex flex-col my-20 gap-6 text-white">
@@ -58,7 +75,7 @@ export default function Dashboard() {
       {/* </div> */}
       <div className="flex justify-center items-center w-full">
         <button
-          onClick={sendLogout}
+          onClick={handleLogout}
           className="text-sm bg-amber-400 hover:opacity-95 py-2 px-4 rounded-2xl"
         >
           Logout

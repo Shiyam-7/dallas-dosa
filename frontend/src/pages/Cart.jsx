@@ -9,17 +9,19 @@ import Map from "../components/Map";
 import { latLng } from "leaflet";
 
 export default function Cart() {
-  const { products } = useSelector((state) => state.cart);
-  const { token, user } = useSelector((state) => state.auth);
-  const [order, setOrder] = useState({ ...products });
+  const { cartItems } = useSelector((state) => state.cart);
+  const { token } = useSelector((state) => state.auth);
+  const [order, setOrder] = useState({ ...cartItems });
   const [address, setAddress] = useState("");
   const [addressLatLng, setAddressLatLng] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   let totalPrice = 0;
-  products.length !== 0 &&
-    products.map((product) => (totalPrice += product.quantity * product.price));
+  cartItems.length !== 0 &&
+    cartItems.map(
+      (product) => (totalPrice += product.quantity * product.price)
+    );
 
   const handleRemoveProduct = (id) => {
     console.log(id);
@@ -35,7 +37,7 @@ export default function Cart() {
         },
         method: "POST",
         body: JSON.stringify({
-          products: products,
+          cartItems: cartItems,
           name: user.username,
           address,
           totalPrice,
@@ -54,8 +56,8 @@ export default function Cart() {
       <div className="font-semibold text-3xl">Checkout</div>
       <div className="flex my-10">
         {/* paste card below */}
-        {products.length > 0 ? (
-          products.map((product) => (
+        {cartItems.length > 0 ? (
+          cartItems.map((product) => (
             <div
               key={product._id}
               className="flex flex-wrap gap-5 m-4 border border-amber-400 p-5"
@@ -96,7 +98,7 @@ export default function Cart() {
       <div className="flex justify-center items-center gap-5">
         <div className="flex flex-col gap-5">
           <div className="items-center justify-start text-xl font-bold">
-            {products.length} items:
+            {cartItems.length} items:
           </div>
           <div className="flex gap-16">
             <div className="flex flex-col gap-6">
@@ -135,7 +137,7 @@ export default function Cart() {
           </div>
           <button
             onClick={handleOrder}
-            disabled={products.length === 0}
+            disabled={cartItems.length === 0}
             className="bg-amber-400 disabled:opacity-80 w-fit mx-auto mt-5 hover:opacity-95 px-10 py-2 rounded-3xl"
           >
             Proceed to payment
@@ -150,7 +152,7 @@ export default function Cart() {
               location={order.addressLatLng}
               onChange={(latlng) => {
                 console.log(latlng);
-                console.log(products);
+                console.log(cartItems);
                 setAddressLatLng(latlng);
               }}
             />

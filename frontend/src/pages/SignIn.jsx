@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { login } from '../redux/slices/authSlice.js'
+import { login } from "../redux/slices/authSlice.js";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -15,21 +15,24 @@ export default function SignIn() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin =async()=>{
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
-      const response= await axios.post("http://localhost:3000/api/auth/login", {
-        email,
-        password,
-      })
-      console.log(response)
-      dispatch(login(response))
-      navigate('/')
-      } catch (error) {
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+      console.log(response.data);
+      dispatch(login(response.data));
+      navigate("/");
+    } catch (error) {
       console.log(error);
     }
-  }
- 
-  
+  };
+
   return (
     <div className="flex flex-col my-10 items-center justify-center text-white">
       <p className="text-3xl font-semibold">Login</p>
@@ -85,9 +88,9 @@ export default function SignIn() {
             </div>
           </form>
           {error && (
-             <div className="text-red-700"> 
-             Wrong credentials! Try different ones 
-             </div> 
+            <div className="text-red-700">
+              Wrong credentials! Try different ones
+            </div>
           )}
         </div>
         <div>
