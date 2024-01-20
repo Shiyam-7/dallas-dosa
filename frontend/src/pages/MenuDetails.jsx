@@ -5,7 +5,7 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoStarSharp } from "react-icons/io5";
 import { MdAdd } from "react-icons/md";
 import { useParams } from "react-router-dom";
-import { addProduct } from "../redux/cartSlice";
+import { addToCart } from "../redux/slices/cartSlice";
 import { BiMinus } from "react-icons/bi";
 import { TailSpin } from "react-loader-spinner";
 
@@ -16,18 +16,17 @@ export default function MenuDetails() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { token } = useSelector((state) => state.auth);
-  const { products } = useSelector((state) => state.cart);
-  console.log(products);
 
   useEffect(() => {
     const fetchFoodDetails = async () => {
       setLoading(true);
-      const res = await fetch(`http://localhost:3000/product/find/${id}`, {
+      const res = await fetch(`http://localhost:3000/api/products/find/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       const data = await res.json();
+      console.log(data);
       setFoodsDetails(data);
     };
     fetchFoodDetails();
@@ -44,7 +43,7 @@ export default function MenuDetails() {
   };
 
   const addToCart = () => {
-    dispatch(addProduct({ ...foodDetails, quantity }));
+    dispatch(addToCart({ ...foodDetails, quantity }));
   };
   return (
     <div className="flex">
@@ -59,7 +58,7 @@ export default function MenuDetails() {
           <div className="flex ">
             <img
               className="h-[500px] rounded-3xl w-[900px] object-cover"
-              src={`http://localhost:3000/images/${foodDetails.img}`}
+              src={`http://localhost:3000/images/${foodDetails.imageLink}`}
               alt="food item cover image"
             />
           </div>
@@ -67,7 +66,7 @@ export default function MenuDetails() {
             <div className="flex flex-col gap-2">
               <p className="font-bold">{foodDetails.title}</p>
               <div className="">
-                <p className="font-light">{foodDetails.desc}</p>
+                <p className="font-light">{foodDetails.description}</p>
               </div>
               <div className="flex items-center ">
                 <MdOutlineAttachMoney className=" h-7 w-7 fill-white" />
@@ -75,7 +74,7 @@ export default function MenuDetails() {
               </div>
             </div>
             <div className="flex items-center justify-center">
-              <p className="mr-2">{foodDetails.review}</p>
+              <p className="mr-2">{foodDetails.rating}</p>
               <IoStarSharp className="fill-orange-600 mr-16" />
               <button
                 disabled={quantity === 1}

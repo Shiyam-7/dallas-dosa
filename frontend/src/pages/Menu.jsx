@@ -12,6 +12,7 @@ export default function Menu() {
   const [error, setError] = useState(false);
   const [products, setProducts] = useState([]);
   const { category } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);

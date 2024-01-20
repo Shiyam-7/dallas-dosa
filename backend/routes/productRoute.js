@@ -4,11 +4,13 @@ const {
   createProduct,
   deleteProduct,
   getProducts,
+  getProduct,
 } = require("../controllers/productController");
 const verifyRoles = require("../middlewares/verifyRoles");
 const rolesList = require("../config/rolesList");
 
 router.get("/", getProducts);
+router.get("/find/:id", getProduct);
 
 router.post(
   "/create-product",
