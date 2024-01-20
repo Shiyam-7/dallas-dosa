@@ -1,14 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
 import regularDosa from "../assets/images/regular-dosa.png";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoStarSharp } from "react-icons/io5";
 import { MdAdd } from "react-icons/md";
 
-
 export default function Menu() {
-  
+  const [products, setProducts] = useState([]);
+  const { category } = useParams();
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await axios.get("http://localhost:3000/api/products");
+      setProducts(response.data);
+    };
+
+    fetchProducts();
+  }, []);
   return (
     <div className="flex flex-col text-white">
       <div className="flex gap-2 flex-col w-full items-center justify-center text-center">
@@ -26,8 +36,9 @@ export default function Menu() {
           </p>
         </div>
       </div>
-      {
-      products.length !== 0 && (
+      {products.length == 0 ? (
+        <p>loding...</p>
+      ) : (
         <div className="flex mt-16 gap-[500px] items-center w-full justify-center ">
           <div className="flex">
             <div className="flex border border-amber-400 py-1 px-10 items-center gap-3">
@@ -49,12 +60,12 @@ export default function Menu() {
             <p>Go to main menu</p>
           </div>
         </div>
-      )
-    }
-    {
-      products.length !== 0 ? (
+      )}
+      {console.log(products)}
+      {products.length !== 0 ? (
         products.map((item) => (
           <div
+            key={item._id}
             onClick={() => {
               navigate(`/food/${item._id}`);
             }}
@@ -89,13 +100,12 @@ export default function Menu() {
           </div>
         ))
       ) : (
-      <div className="flex w-ful my-20 justify-center items-center">
-        <p className="uppercase text-3xl">
-          no <span className="text-amber-400">{category}</span> right now!
-        </p>
-      </div>
-    )
-    }
+        <div className="flex w-ful my-20 justify-center items-center">
+          <p className="uppercase text-3xl">
+            no <span className="text-amber-400">{category}</span> right now!
+          </p>
+        </div>
+      )}
     </div>
   );
 }
