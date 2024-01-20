@@ -26,7 +26,6 @@ export default function MenuDetails() {
         },
       });
       const data = await res.json();
-      console.log(data);
       setFoodsDetails(data);
     };
     fetchFoodDetails();
@@ -41,9 +40,11 @@ export default function MenuDetails() {
       setQuantity((prev) => prev + 1);
     }
   };
-
-  const addToCart = () => {
-    dispatch(addToCart({ ...foodDetails, quantity }));
+  console.log(quantity);
+  const addProducts = () => {
+    const data = { ...foodDetails, quantity };
+    console.log(data);
+    dispatch(addToCart(data));
   };
   return (
     <div className="flex">
@@ -95,7 +96,7 @@ export default function MenuDetails() {
                 <MdAdd className="fill-white" />
               </button>
               <button
-                onClick={addToCart}
+                onClick={addProducts}
                 className="ml-5 bg-amber-400 hover:opacity-95 p-1 text-sm rounded-2xl"
               >
                 Add To Cart

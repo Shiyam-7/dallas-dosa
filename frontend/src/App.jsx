@@ -11,7 +11,7 @@ import AboutUs from "./pages/AboutUs";
 import CreateItem from "./pages/CreateItem";
 //import Payment from "./pages/Payment";
 import Category from "./pages/Category";
-//import Cart from "./pages/Cart";
+import Cart from "./pages/Cart";
 import MenuDetails from "./pages/MenuDetails";
 //import OrderTrack from "./pages/OrderTrack";
 import PrivateRoute from "./components/PrivateRoute";
@@ -37,7 +37,7 @@ export default function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/create-item" element={<CreateItem />} />
           {/* <Route path="/profile" element={<Profile />} /> */}
-          {/* <Route path="/cart" element={<Cart />} /> */}
+          <Route path="/cart" element={<Cart />} />
           {/* <Route path="/payment" element={<Payment />} /> */}
           {/* <Route path="/track/:id" element={<OrderTrack />} /> */}
           <Route path="/dashboard" element={<Dashboard />} />

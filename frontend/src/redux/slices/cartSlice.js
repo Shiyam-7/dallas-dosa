@@ -12,10 +12,11 @@ export const cartSlice = createSlice({
       const product = state.cartItems.find(
         (product) => product._id === action.payload._id
       );
-      if (!product) {
+      if (product) {
+        product.quantity += action.payload.quantity;
+      } else {
         state.cartItems.push(action.payload);
       }
-      product.quantity += action.payload.quantity;
     },
     removeFromCart: (state, action) => {
       state.cartItems = state.cartItems.filter(

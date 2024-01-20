@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { removeProduct } from "../redux/cartSlice";
+import { removeFromCart } from "../redux/slices/cartSlice";
 import { MdOutlineAttachMoney, MdAdd } from "react-icons/md";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import Map from "../components/Map";
@@ -25,7 +25,7 @@ export default function Cart() {
 
   const handleRemoveProduct = (id) => {
     console.log(id);
-    dispatch(removeProduct({ _id: id }));
+    dispatch(removeFromCart({ _id: id }));
   };
 
   const handleOrder = async () => {
@@ -65,7 +65,7 @@ export default function Cart() {
               <div>
                 <img
                   className="w-[14rem] object-cover h-[9rem]"
-                  src={`http://localhost:3000/images/${product.img}`}
+                  src={`http://localhost:3000/images/${product.imageLink}`}
                   alt="product image"
                 />
               </div>
@@ -121,7 +121,7 @@ export default function Cart() {
                 <input
                   disabled
                   className="w-full appearance-none bg-transparent border border-amber-400  focus:outline-none p-1 rounded-md"
-                  value={user.username}
+                  value="{user.username}"
                   type="text"
                 />
               </div>
