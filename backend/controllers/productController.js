@@ -3,6 +3,10 @@ const { Product } = require("../db");
 
 const createProduct = async (req, res) => {
   try {
+    const price = parseFloat(req.body.price);
+    const rating = parseFloat(req.body.rating);
+    req.body.price = price;
+    req.body.rating = rating;
     const validatedRequest = productSchema.safeParse(req.body);
     if (!validatedRequest.success) {
       return res.status(400).json({
@@ -12,7 +16,7 @@ const createProduct = async (req, res) => {
     const newProduct = await Product.create({
       title: req.body.title,
       description: req.body.description,
-      price: req.body.price,
+      price,
       imageLink: req.body.imageLink,
       rating: req.body.rating,
       category: req.body.category,
@@ -50,7 +54,6 @@ const getProducts = async (req, res) => {
     const products = await Product.find({});
     res.status(200).send(products);
   } catch (error) {
-
     console.log(error);
     res.status(500).json({ msg: "Oops!! Something went wrong!" });
   }

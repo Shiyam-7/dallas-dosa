@@ -15,9 +15,9 @@ const loginSchema = zod.object({
 const productSchema = zod.object({
   title: zod.string().min(1).max(50),
   description: zod.string().min(1).max(1000),
-  price: zod.number().nonnegative(),
+  price: zod.number(),
   imageLink: zod.string().min(1),
-  rating: zod.number().nonnegative(),
+  rating: zod.number(),
   category: zod.string().min(1).max(50),
 });
 

@@ -22,6 +22,7 @@ router.post(
   upload.single("image"),
   (req, res) => {
     try {
+      console.log(req.body);
       return res.status(201).json({ msg: "Successfully uploaded the image!" });
     } catch (error) {
       console.error(error.message);

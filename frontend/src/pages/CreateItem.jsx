@@ -2,14 +2,15 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
 
 export default function CreateItem() {
   const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
+  const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState("");
   const [price, setPrice] = useState("");
-  const [review, setReview] = useState("");
+  const [rating, setRating] = useState("");
   const navigate = useNavigate();
 
   // we get the auth slice from the entire state, which(auth slice)
@@ -21,9 +22,9 @@ export default function CreateItem() {
     setImage(e.target.files[0]);
   };
 
-  // const handleCloseImg = () => {
-  //   setImage("");
-  // };
+  const handleCloseImg = () => {
+    setImage("");
+  };
 
   const handleCreateProduct = async (e) => {
     e.preventDefault();
@@ -31,12 +32,12 @@ export default function CreateItem() {
     try {
       const formData = new FormData();
       let filename = null;
-
+      console.log(image.name);
       if (image) {
         filename = Date.now() + image.name;
         formData.append("filename", filename);
         formData.append("image", image);
-
+        console.log(formData);
         await fetch(`http://localhost:3000/upload/image`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -47,26 +48,28 @@ export default function CreateItem() {
       }
 
       // uploading product
-      const res = await fetch(`http://localhost:3000/product`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        method: "POST",
-        body: JSON.stringify({
+      const res = await axios.post(
+        `http://localhost:3000/api/products/create-product`,
+        {
           title,
-          desc,
+          description,
           category,
-          img: filename,
+          imageLink: filename,
           price,
-          review,
-        }),
-      });
+          rating,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-      const food = await res.json();
+      const food = res;
       navigate(`/menu`);
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   };
   return (
@@ -92,7 +95,7 @@ export default function CreateItem() {
                 className="appearance-none bg-transparent border border-amber-400  focus:outline-none p-3 rounded-md"
                 type="text"
                 placeholder="Description..."
-                onChange={(e) => setDesc(e.target.value)}
+                onChange={(e) => setDescription(e.target.value)}
               ></input>
             </div>
             <div className="flex gap-20 justify-between items-center">
@@ -123,7 +126,7 @@ export default function CreateItem() {
                 type="number"
                 step={0.1}
                 placeholder="Rating..."
-                onChange={(e) => setReview(e.target.value)}
+                onChange={(e) => setRating(e.target.value)}
               ></input>
             </div>
             <div className="flex justify-between gap-20 items-center">

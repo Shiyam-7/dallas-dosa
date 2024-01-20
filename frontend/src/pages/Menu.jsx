@@ -75,7 +75,7 @@ export default function Menu() {
               <div className="flex">
                 <img
                   className="h-[250px] w-[300px] object-cover"
-                  src={`http://localhost:3000/images/${item.img}`}
+                  src={`http://localhost:3000/images/${item.imageLink}`}
                   alt="food item cover image"
                 />
               </div>
@@ -88,7 +88,7 @@ export default function Menu() {
                   </div>
                 </div>
                 <div className="flex items-center justify-center">
-                  <p className="mr-2">{item.review}</p>
+                  <p className="mr-2">{item.rating}</p>
                   <IoStarSharp className="fill-orange-600 mr-16" />
                   <button className="flex border border-white rounded-md items-center p-1 font-semibold text-sm">
                     ADD
