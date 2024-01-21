@@ -1,16 +1,5 @@
 const { Order } = require("../db");
-const { z } = require("zod");
-
-const orderSchema = z.object({
-  username: z.string().min(1).max(50),
-  address: z.string().min(1).max(500),
-  addressLatLng: z.object({
-    lat: z.number(),
-    lng: z.number(),
-  }),
-  totalPrice: z.number().nonnegative(),
-  products: z.array(),
-});
+const { orderSchema } = require("../zodSchema");
 
 const newOrder = async (req, res) => {
   try {

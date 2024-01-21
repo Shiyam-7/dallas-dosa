@@ -21,4 +21,15 @@ const productSchema = z.object({
   category: z.string().min(1).max(50),
 });
 
-module.exports = { signupSchema, loginSchema, productSchema };
+const orderSchema = z.object({
+  username: z.string().min(1).max(50),
+  address: z.string().min(1).max(500),
+  addressLatLng: z.object({
+    lat: z.number(),
+    lng: z.number(),
+  }),
+  totalPrice: z.number().nonnegative(),
+  products: z.array(),
+});
+
+module.exports = { signupSchema, loginSchema, productSchema, orderSchema };
