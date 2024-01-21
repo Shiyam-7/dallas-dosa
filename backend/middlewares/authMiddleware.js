@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const authMiddleware = (req, res, next) => {
   try {
+    console.log(req.cookies);
     const token = req.headers.authorization || req.headers.Authorization;
     if (!token?.startsWith("Bearer ")) {
       res.sendStatus(401);
@@ -18,6 +19,8 @@ const authMiddleware = (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
+    if (error.message === "jwt expired")
+      return res.json({ msg: "jwt expired" });
     res.sendStatus(401);
   }
 };

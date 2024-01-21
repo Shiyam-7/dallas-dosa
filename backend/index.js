@@ -29,7 +29,7 @@ app.use("/api/auth", authRouter);
 // app.use("/api/admin", adminRouter);
 app.use("/api/products", productRouter);
 app.use("/api/orders", orderRouter);
-// app.use("/api/refresh-token", refreshTokenRouter);
+app.use("/api/refresh-token", refreshTokenRouter);
 app.use("/upload", imageUploadController);
 
 app.get("/", async (req, res) => {

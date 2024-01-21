@@ -42,12 +42,12 @@ export default function CurrentOrders() {
           }),
         }
       );
-      const data = await res.json();
-      console.log(data);
+      console.log(res);
       getCurrentOrders();
-      toast.success(data);
+      toast.success();
     } catch (error) {
-      toast.error(error.message);
+      toast.error();
+      console.log(error);
     }
   };
 

@@ -61,7 +61,7 @@ export default function OrderTrack() {
             </div>
             <div className="flex flex-col ">
               {order.products.map((item) => (
-                <div className="flex flex-wrap ">
+                <div className="flex flex-wrap " key={item._id}>
                   <p>{item.title} - </p> <p> quantity: {item.quantity}</p>
                 </div>
               ))}

@@ -70,7 +70,7 @@ const login = async (req, res) => {
               },
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: "5m" }
+            { expiresIn: "30s" }
           );
           const refreshToken = jwt.sign(
             { username: isExists.username },

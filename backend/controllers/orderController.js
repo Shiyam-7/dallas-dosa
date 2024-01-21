@@ -29,7 +29,10 @@ const payment = async (req, res) => {
     if (!paymentId) {
       return res.status(400).json({ msg: "Payment Id is required!" });
     }
-    const order = await Order.findOne({ username: req.user });
+    const order = await Order.findOne({
+      username: req.user,
+      paymentStatus: "UNPAID",
+    });
     if (!order) {
       return res.status(404).json({ msg: "Order not found!" });
     }

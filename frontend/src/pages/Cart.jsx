@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { login } from "../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import { removeFromCart } from "../redux/slices/cartSlice";
 import { MdOutlineAttachMoney, MdAdd } from "react-icons/md";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import Map from "../components/Map";
 import { latLng } from "leaflet";
+import axios from "axios";
 
 export default function Cart() {
   const { cartItems } = useSelector((state) => state.cart);
@@ -33,7 +35,7 @@ export default function Cart() {
     console.log(id);
     dispatch(removeFromCart({ _id: id }));
   };
-
+  // const refresh = async () => {};
   const handleOrder = async () => {
     try {
       const res = await fetch("http://localhost:3000/api/orders/new-order", {
@@ -42,6 +44,7 @@ export default function Cart() {
           Authorization: `Bearer ${token}`,
         },
         method: "POST",
+        credentials: "include",
         body: JSON.stringify({
           username: user.username,
           address,
@@ -52,7 +55,44 @@ export default function Cart() {
       });
       const data = await res.json();
       console.log(data);
-      navigate("/payment");
+      console.log(data.msg);
+      if (data.msg === "jwt expired") {
+        try {
+          const response = await axios.get(
+            "http://localhost:3000/api/refresh-token",
+            { withCredentials: true }
+          );
+          console.log(response.data);
+          const userinfo = { ...response.data, user };
+          console.log(userinfo);
+          dispatch(login(userinfo));
+
+          const res = await fetch(
+            "http://localhost:3000/api/orders/new-order",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              method: "POST",
+              credentials: "include",
+              body: JSON.stringify({
+                username: user.username,
+                address,
+                addressLatLng,
+                totalPrice,
+                products: cartItems,
+              }),
+            }
+          );
+          const data = await res.json();
+
+          console.log(data);
+          navigate("/payment");
+        } catch (error) {
+          console.log(error);
+        }
+      }
     } catch (error) {
       console.log(error);
     }

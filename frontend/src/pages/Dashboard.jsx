@@ -25,9 +25,8 @@ export default function Dashboard() {
     try {
       const response = await axios.post(
         "http://localhost:3000/api/auth/logout",
-        {
-          withCredentials: true,
-        }
+        {},
+        { withCredentials: true }
       );
       dispatch(logout());
       navigate("/sign-in");

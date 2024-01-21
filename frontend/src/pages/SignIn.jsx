@@ -24,6 +24,9 @@ export default function SignIn() {
         {
           email,
           password,
+        },
+        {
+          withCredentials: true,
         }
       );
       console.log(response.data);
