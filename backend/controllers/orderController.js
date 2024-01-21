@@ -1,21 +1,33 @@
 const { Order } = require("../db");
-const { orderSchema } = require("../zodSchema");
+const { z } = require("zod");
+
+const orderSchema = z.object({
+  username: z.string().min(1).max(50),
+  address: z.string().min(1).max(500),
+  addressLatLng: z.object({
+    lat: z.number(),
+    lng: z.number(),
+  }),
+  totalPrice: z.number().nonnegative(),
+  products: z.array(),
+});
 
 const newOrder = async (req, res) => {
   try {
+    console.log(req.body);
     const validatedRequest = orderSchema.safeParse(req.body);
     if (!validatedRequest.success) {
       return res.status(400).json({
         msg: "Invalid" + " " + validatedRequest.error.issues[0].path[0] + "!",
       });
     }
-    const newOrder = await Order.create(req.body);
-    if (!newOrder) {
+    const new_order = await Order.create(req.body);
+    if (!new_order) {
       return res.status(500).json({
         msg: "Order cannot be placed at the moment!. Please try again after sometime.",
       });
     }
-    res.status(200).send(newOrder);
+    res.status(200).send(new_order);
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "Oops!! Something went wrong!" });

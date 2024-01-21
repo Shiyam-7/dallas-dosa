@@ -62,7 +62,13 @@ const login = async (req, res) => {
         } else {
           const roles = Object.values(isExists.roles);
           const accessToken = jwt.sign(
-            { UserInfo: { username: isExists.username, roles } },
+            {
+              UserInfo: {
+                username: isExists.username,
+                roles,
+                address: isExists.address,
+              },
+            },
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: "5m" }
           );

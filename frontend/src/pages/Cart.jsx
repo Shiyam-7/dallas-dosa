@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,9 +10,15 @@ import { latLng } from "leaflet";
 
 export default function Cart() {
   const { cartItems } = useSelector((state) => state.cart);
-  const { token } = useSelector((state) => state.auth);
+  const { token, user } = useSelector((state) => state.auth);
   const [order, setOrder] = useState({ ...cartItems });
   const [address, setAddress] = useState("");
+  console.log(address);
+  useEffect(() => {
+    setAddress(user.address);
+  }, []);
+
+  console.log(address);
   const [addressLatLng, setAddressLatLng] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -30,23 +36,23 @@ export default function Cart() {
 
   const handleOrder = async () => {
     try {
-      const res = await fetch("http://localhost:3000/orders/create", {
+      const res = await fetch("http://localhost:3000/api/orders/new-order", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         method: "POST",
         body: JSON.stringify({
-          cartItems: cartItems,
-          name: user.username,
+          username: user.username,
           address,
+          addressLatLng,
           totalPrice,
-          addressLatLng: addressLatLng,
+          products: cartItems,
         }),
       });
       const data = res.json();
       console.log(data);
-      navigate("/payment");
+      // navigate("/payment");
     } catch (error) {
       console.log(error);
     }
@@ -121,7 +127,7 @@ export default function Cart() {
                 <input
                   disabled
                   className="w-full appearance-none bg-transparent border border-amber-400  focus:outline-none p-1 rounded-md"
-                  value="{user.username}"
+                  value={user.username}
                   type="text"
                 />
               </div>
@@ -129,6 +135,7 @@ export default function Cart() {
                 <input
                   className="w-full appearance-none bg-transparent border border-amber-400  focus:outline-none p-1 rounded-md"
                   type="text"
+                  value={address}
                   placeholder="Enter Your Address"
                   onChange={(e) => setAddress(e.target.value)}
                 />

@@ -73,10 +73,9 @@ export default function Menu() {
         <p>error</p>
       ) : products.length !== 0 ? (
         products.map((item) => (
-          <>
+          <div key={item._id}>
             {item.category === category && (
               <div
-                key={item._id}
                 onClick={() => {
                   navigate(`/food/${item._id}`);
                 }}
@@ -110,7 +109,7 @@ export default function Menu() {
                 </div>
               </div>
             )}
-          </>
+          </div>
         ))
       ) : (
         <div className="flex w-ful my-20 justify-center items-center">

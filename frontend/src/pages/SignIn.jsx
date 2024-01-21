@@ -4,6 +4,7 @@ import signin from "../assets/images/sign-in.png";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { login } from "../redux/slices/authSlice.js";
@@ -26,7 +27,13 @@ export default function SignIn() {
         }
       );
       console.log(response.data);
-      dispatch(login(response.data));
+      const decoded = jwtDecode(response.data.accessToken);
+      console.log(decoded);
+      const data = {
+        accessToken: response.data.accessToken,
+        user: decoded.UserInfo,
+      };
+      dispatch(login(data));
       navigate("/");
     } catch (error) {
       console.log(error);
