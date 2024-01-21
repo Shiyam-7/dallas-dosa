@@ -1,15 +1,15 @@
 const { Order } = require("../db");
-const { orderSchema } = require("../zodSchema");
+// const { orderSchema } = require("../zodSchema");
 
 const newOrder = async (req, res) => {
   try {
-    console.log(req.body);
-    const validatedRequest = orderSchema.safeParse(req.body);
-    if (!validatedRequest.success) {
-      return res.status(400).json({
-        msg: "Invalid" + " " + validatedRequest.error.issues[0].path[0] + "!",
-      });
-    }
+    // console.log(req.body);
+    // const validatedRequest = orderSchema.safeParse(req.body);
+    // if (!validatedRequest.success) {
+    //   return res.status(400).json({
+    //     msg: "Invalid" + " " + validatedRequest.error.issues[0].path[0] + "!",
+    //   });
+    // }
     const new_order = await Order.create(req.body);
     if (!new_order) {
       return res.status(500).json({
@@ -36,7 +36,7 @@ const payment = async (req, res) => {
     order.paymentId = paymentId;
     order.paymentStatus = "PAID";
     await order.save();
-    res.status(200).json({ msg: "Order placed successfully!" });
+    res.status(200).send(order._id);
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "Oops!! Something went wrong!" });
@@ -72,7 +72,16 @@ const orderDelivered = async (req, res) => {
   }
 };
 const newOrderForCurrentUser = async (req, res) => {
-  res.send("hi");
+  try {
+    const order = await Order.findOne({
+      username: req.user,
+      orderStatus: "NEW",
+    });
+    res.status(200).json(order);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Oops!! Something went wrong!" });
+  }
 };
 const trackOrder = async (req, res) => {
   try {

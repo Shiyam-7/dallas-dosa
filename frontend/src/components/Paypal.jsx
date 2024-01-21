@@ -5,7 +5,7 @@ import {
 } from "@paypal/react-paypal-js";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { emptyCart } from "../redux/cartSlice";
+import { emptyCart } from "../redux/slices/cartSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 export default function Paypal({ order }) {
@@ -45,17 +45,18 @@ function Buttons({ order }) {
 
   const paymentRequest = async (id) => {
     try {
-      const res = await fetch("http://localhost:3000/orders/pay", {
+      const res = await fetch("http://localhost:3000/api/orders/payment", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        method: "PUT",
+        method: "PATCH",
         body: JSON.stringify({
           paymentId: id,
         }),
       });
       const data = res.json();
+      console.log(data);
       return data;
     } catch (error) {
       return error.message;
@@ -66,6 +67,7 @@ function Buttons({ order }) {
     try {
       const payment = await actions.order.capture();
       const orderId = await paymentRequest(payment.id);
+      console.log(orderId);
       dispatch(emptyCart());
       navigate("/track/" + orderId);
     } catch (error) {

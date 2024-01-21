@@ -9,10 +9,9 @@ export default function Payment() {
   const [order, setOrder] = useState();
   const { token } = useSelector((state) => state.auth);
   useEffect(() => {
-    console.log("ji");
     const fetchOrder = async () => {
       const res = await fetch(
-        "http://localhost:3000/orders/newOrderForCurrentUser",
+        "http://localhost:3000/api/orders/newOrderForCurrentUser",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -39,7 +38,7 @@ export default function Payment() {
               <div>
                 <img
                   className="w-[14rem] object-cover h-[9rem]"
-                  src={`http://localhost:3000/images/${product.img}`}
+                  src={`http://localhost:3000/images/${product.imageLink}`}
                   alt="product image"
                 />
               </div>
@@ -95,7 +94,7 @@ export default function Payment() {
                 <input
                   disabled
                   className="w-full appearance-none bg-transparent border border-amber-400  focus:outline-none p-1 rounded-md"
-                  value={order.name}
+                  value={order.username}
                   type="text"
                 />
               </div>

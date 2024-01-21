@@ -6,16 +6,21 @@ import "react-toastify/dist/ReactToastify.css";
 export default function CurrentOrders() {
   const [currentOrders, setCurrentOrders] = useState([]);
   const { token } = useSelector((state) => state.auth);
-  console.log(currentOrders);
   const getCurrentOrders = async () => {
-    console.log("hi");
-    const res = await fetch("http://localhost:3000/orders/getCurrentOrders", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await res.json();
-    setCurrentOrders(data);
+    try {
+      const res = await fetch(
+        "http://localhost:3000/api/orders/getCurrentOrders",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await res.json();
+      setCurrentOrders(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -23,18 +28,20 @@ export default function CurrentOrders() {
   }, []);
 
   const orderDelivered = async (id) => {
-    console.log(id);
     try {
-      const res = await fetch("http://localhost:3000/orders/orderDelivered", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        method: "PUT",
-        body: JSON.stringify({
-          _id: id,
-        }),
-      });
+      const res = await fetch(
+        "http://localhost:3000/api/orders/orderDelivered",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          method: "PUT",
+          body: JSON.stringify({
+            _id: id,
+          }),
+        }
+      );
       const data = await res.json();
       console.log(data);
       getCurrentOrders();

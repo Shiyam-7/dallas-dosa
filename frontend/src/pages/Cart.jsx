@@ -50,9 +50,9 @@ export default function Cart() {
           products: cartItems,
         }),
       });
-      const data = res.json();
+      const data = await res.json();
       console.log(data);
-      // navigate("/payment");
+      navigate("/payment");
     } catch (error) {
       console.log(error);
     }

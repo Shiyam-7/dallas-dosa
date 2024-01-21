@@ -12,11 +12,14 @@ export default function OrderTrack() {
   console.log(order);
 
   const fetchOrder = async (id) => {
-    const res = await fetch(`http://localhost:3000/orders/track/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await fetch(
+      `http://localhost:3000/api/orders/track-order/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     const data = await res.json();
     return data;
   };
@@ -48,7 +51,7 @@ export default function OrderTrack() {
               Order Placed:
             </div>
             <div className="items-center justify-start text-xl font-bold">
-              Order ID : {order.id}
+              Order ID : {order._id}
             </div>
             <div className="items-center justify-start text-xl font-bold">
               Payment ID : {order.paymentId}
@@ -73,7 +76,7 @@ export default function OrderTrack() {
             <div className="flex w-full flex-col gap-5">
               <form action="">
                 <div className="flex">
-                  <p>Your Name: {order.name}</p>
+                  <p>Your Name: {order.username}</p>
                 </div>
                 <div className="flex mt-2">
                   <p>Delivery Address: {order.address}</p>
