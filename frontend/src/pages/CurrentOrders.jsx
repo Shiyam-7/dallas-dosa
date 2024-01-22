@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { login } from "../redux/slices/authSlice";
+import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function CurrentOrders() {
+  const dispatch = useDispatch();
   const [currentOrders, setCurrentOrders] = useState([]);
-  const { token } = useSelector((state) => state.auth);
+  const { token, user } = useSelector((state) => state.auth);
   const getCurrentOrders = async () => {
     try {
       const res = await fetch(
@@ -14,10 +17,37 @@ export default function CurrentOrders() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          credentials: "include",
         }
       );
       const data = await res.json();
-      setCurrentOrders(data);
+      console.log(data);
+      if (data.msg === "jwt expired") {
+        try {
+          const response = await axios.get(
+            "http://localhost:3000/api/refresh-token",
+            { withCredentials: true }
+          );
+          console.log(response);
+          const userinfo = { ...response.data, user };
+          dispatch(login(userinfo));
+          const res = await fetch(
+            "http://localhost:3000/api/orders/getCurrentOrders",
+            {
+              headers: {
+                Authorization: `Bearer ${userinfo.accessToken}`,
+              },
+              credentials: "include",
+            }
+          );
+          const data = await res.json();
+          console.log(data);
+          setCurrentOrders(data);
+          // navigate("/payment");
+        } catch (error) {
+          console.log(error);
+        }
+      }
     } catch (error) {
       console.log(error);
     }
@@ -37,6 +67,7 @@ export default function CurrentOrders() {
             Authorization: `Bearer ${token}`,
           },
           method: "PUT",
+          credentials: "include",
           body: JSON.stringify({
             _id: id,
           }),

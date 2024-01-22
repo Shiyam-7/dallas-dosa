@@ -38,6 +38,7 @@ export default function Cart() {
   // const refresh = async () => {};
   const handleOrder = async () => {
     try {
+      console.log("1");
       const res = await fetch("http://localhost:3000/api/orders/new-order", {
         headers: {
           "Content-Type": "application/json",
@@ -55,24 +56,23 @@ export default function Cart() {
       });
       const data = await res.json();
       console.log(data);
-      console.log(data.msg);
       if (data.msg === "jwt expired") {
         try {
+          console.log("2");
           const response = await axios.get(
             "http://localhost:3000/api/refresh-token",
             { withCredentials: true }
           );
-          console.log(response.data);
+          console.log(response);
           const userinfo = { ...response.data, user };
-          console.log(userinfo);
           dispatch(login(userinfo));
-
+          console.log("3");
           const res = await fetch(
             "http://localhost:3000/api/orders/new-order",
             {
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${userinfo.accessToken}`,
               },
               method: "POST",
               credentials: "include",
@@ -86,7 +86,6 @@ export default function Cart() {
             }
           );
           const data = await res.json();
-
           console.log(data);
           navigate("/payment");
         } catch (error) {

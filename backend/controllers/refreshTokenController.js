@@ -3,6 +3,7 @@ const { User } = require("../db");
 
 const refreshToken = async (req, res) => {
   try {
+    console.log(req.cookies);
     const cookies = req.cookies;
     if (!cookies?.refreshToken) {
       res.sendStatus(401);
@@ -23,7 +24,7 @@ const refreshToken = async (req, res) => {
           const accessToken = jwt.sign(
             { UserInfo: { username: decoded.username, roles } },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: "5m" }
+            { expiresIn: "30s" }
           );
           res.status(200).json({ accessToken });
         }
