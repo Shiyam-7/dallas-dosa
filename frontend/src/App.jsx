@@ -14,7 +14,8 @@ import Category from "./pages/Category";
 import Cart from "./pages/Cart";
 import MenuDetails from "./pages/MenuDetails";
 import OrderTrack from "./pages/OrderTrack";
-import PrivateRoute from "./components/PrivateRoute";
+import AdminRoute from "./components/ProtectedRouteAdmin";
+import UserRoute from "./components/ProtectedRouteUser";
 //import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 //import OrderHistory from "./pages/OrderHistory";
@@ -34,16 +35,19 @@ export default function App() {
         <Route path="/category" element={<Category />} />
         <Route path="/category/:category" element={<Menu />} />
         <Route path="/food/:id" element={<MenuDetails />} />
-        <Route element={<PrivateRoute />}>
+        <Route element={<AdminRoute />}>
           <Route path="/create-item" element={<CreateItem />} />
-          {/* <Route path="/profile" element={<Profile />} /> */}
+          <Route path="/current-orders" element={<CurrentOrders />} />
+        </Route>
+        <Route element={<UserRoute />}>
           <Route path="/cart" element={<Cart />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/track/:id" element={<OrderTrack />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          {/* <Route path="/order-history" element={<OrderHistory />} /> */}
-          <Route path="/current-orders" element={<CurrentOrders />} />
         </Route>
+        {/* <Route path="/profile" element={<Profile />} /> */}
+
+        {/* <Route path="/order-history" element={<OrderHistory />} /> */}
       </Routes>
       <Footer />
     </BrowserRouter>
