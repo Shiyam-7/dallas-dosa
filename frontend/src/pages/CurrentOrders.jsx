@@ -43,10 +43,11 @@ export default function CurrentOrders() {
           const data = await res.json();
           console.log(data);
           setCurrentOrders(data);
-          // navigate("/payment");
         } catch (error) {
           console.log(error);
         }
+      } else {
+        setCurrentOrders(data);
       }
     } catch (error) {
       console.log(error);
@@ -73,9 +74,45 @@ export default function CurrentOrders() {
           }),
         }
       );
-      console.log(res);
-      getCurrentOrders();
-      toast.success();
+      console.log(res.status);
+      const data = await res.json();
+      console.log(data);
+      if (data.msg === "jwt expired") {
+        try {
+          console.log("2");
+          const response = await axios.get(
+            "http://localhost:3000/api/refresh-token",
+            { withCredentials: true }
+          );
+          console.log(response);
+          const userinfo = { ...response.data, user };
+          dispatch(login(userinfo));
+          console.log("3");
+          const res = await fetch(
+            "http://localhost:3000/api/orders/orderDelivered",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userinfo.accessToken}`,
+              },
+              method: "PUT",
+              credentials: "include",
+              body: JSON.stringify({
+                _id: id,
+              }),
+            }
+          );
+          const data = await res.json();
+          console.log(data);
+          getCurrentOrders();
+          toast.success("Success!");
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        getCurrentOrders();
+        toast.success("Succes!");
+      }
     } catch (error) {
       toast.error();
       console.log(error);

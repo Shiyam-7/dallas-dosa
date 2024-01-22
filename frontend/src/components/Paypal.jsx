@@ -3,7 +3,9 @@ import {
   PayPalScriptProvider,
   usePayPalScriptReducer,
 } from "@paypal/react-paypal-js";
+import { login } from "../redux/slices/authSlice";
 import React, { useEffect } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { emptyCart } from "../redux/slices/cartSlice";
 import { useSelector, useDispatch } from "react-redux";
@@ -56,7 +58,7 @@ function Buttons({ order }) {
           paymentId: id,
         }),
       });
-      const data = res.json();
+      const data = await res.json();
       console.log(data);
       if (data.msg === "jwt expired") {
         try {

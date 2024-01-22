@@ -64,11 +64,11 @@ const orderDelivered = async (req, res) => {
       _id: req.body._id,
     });
     if (!order) {
-      return res.status(404).json("Order Not Found!");
+      return res.status(404).json({ msg: "Order Not Found!" });
     }
     order.orderStatus = "DELIVERED";
     await order.save();
-    res.sendStatus(204);
+    res.status(200).json({ msg: "Success" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "Oops!! Something went wrong!" });

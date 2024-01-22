@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { MdOutlineAttachMoney } from "react-icons/md";
+import { login } from "../redux/slices/authSlice";
 import Map from "../components/Map";
 import axios from "axios";
 import { IoIosCloseCircleOutline } from "react-icons/io";
