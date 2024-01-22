@@ -70,12 +70,12 @@ const login = async (req, res) => {
               },
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: "30s" }
+            { expiresIn: "20s" }
           );
           const refreshToken = jwt.sign(
             { username: isExists.username },
             process.env.REFRESH_TOKEN_SECRET,
-            { expiresIn: "1d" }
+            { expiresIn: "40s" }
           );
           const loginUser = await User.findOneAndUpdate(
             { username: isExists.username },
@@ -94,7 +94,7 @@ const login = async (req, res) => {
                 httpOnly: true,
                 sameSite: "None",
                 secure: true,
-                maxAge: 24 * 60 * 60 * 1000,
+                maxAge: 40 * 1000,
               })
               .json({ accessToken });
           }

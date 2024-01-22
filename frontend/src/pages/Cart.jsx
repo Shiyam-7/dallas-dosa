@@ -35,7 +35,6 @@ export default function Cart() {
     console.log(id);
     dispatch(removeFromCart({ _id: id }));
   };
-  // const refresh = async () => {};
   const handleOrder = async () => {
     try {
       console.log("1");
@@ -91,6 +90,8 @@ export default function Cart() {
         } catch (error) {
           console.log(error);
         }
+      } else {
+        navigate("/payment");
       }
     } catch (error) {
       console.log(error);

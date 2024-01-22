@@ -22,7 +22,7 @@ export default function Paypal({ order }) {
 }
 
 function Buttons({ order }) {
-  const { token } = useSelector((state) => state.auth);
+  const { token, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [{ isPending }] = usePayPalScriptReducer();
@@ -50,6 +50,7 @@ function Buttons({ order }) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
         method: "PATCH",
         body: JSON.stringify({
           paymentId: id,
@@ -57,7 +58,37 @@ function Buttons({ order }) {
       });
       const data = res.json();
       console.log(data);
-      return data;
+      if (data.msg === "jwt expired") {
+        try {
+          console.log("2");
+          const response = await axios.get(
+            "http://localhost:3000/api/refresh-token",
+            { withCredentials: true }
+          );
+          console.log(response);
+          const userinfo = { ...response.data, user };
+          dispatch(login(userinfo));
+          console.log("3");
+          const res = await fetch("http://localhost:3000/api/orders/payment", {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userinfo.accessToken}`,
+            },
+            credentials: "include",
+            method: "PATCH",
+            body: JSON.stringify({
+              paymentId: id,
+            }),
+          });
+          const data = await res.json();
+          console.log(data);
+          return data;
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        return data;
+      }
     } catch (error) {
       return error.message;
     }

@@ -1,25 +1,60 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import Map from "../components/Map";
+import axios from "axios";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import Paypal from "../components/Paypal";
 
 export default function Payment() {
+  const dispatch = useDispatch();
   const [order, setOrder] = useState();
-  const { token } = useSelector((state) => state.auth);
+  const { token, user } = useSelector((state) => state.auth);
   useEffect(() => {
     const fetchOrder = async () => {
-      const res = await fetch(
-        "http://localhost:3000/api/orders/newOrderForCurrentUser",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      try {
+        const res = await fetch(
+          "http://localhost:3000/api/orders/newOrderForCurrentUser",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            credentials: "include",
+          }
+        );
+        const data = await res.json();
+        if (data.msg === "jwt expired") {
+          try {
+            console.log("2");
+            const response = await axios.get(
+              "http://localhost:3000/api/refresh-token",
+              { withCredentials: true }
+            );
+            console.log(response);
+            const userinfo = { ...response.data, user };
+            dispatch(login(userinfo));
+            console.log("3");
+            const res = await fetch(
+              "http://localhost:3000/api/orders/newOrderForCurrentUser",
+              {
+                headers: {
+                  Authorization: `Bearer ${userinfo.accessToken}`,
+                },
+                credentials: "include",
+              }
+            );
+            const data = await res.json();
+            console.log(data);
+            setOrder(data);
+          } catch (error) {
+            console.log(error);
+          }
+        } else {
+          setOrder(data);
         }
-      );
-      const data = await res.json();
-      setOrder(data);
+      } catch (error) {
+        console.log(error);
+      }
     };
     fetchOrder();
   }, []);

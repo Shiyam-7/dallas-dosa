@@ -1,27 +1,62 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Map from "../components/Map";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
 export default function OrderTrack() {
-  const { token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { token, user } = useSelector((state) => state.auth);
   const { id } = useParams();
   const [order, setOrder] = useState();
   console.log(order);
 
   const fetchOrder = async (id) => {
-    const res = await fetch(
-      `http://localhost:3000/api/orders/track-order/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/orders/track-order/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        }
+      );
+      const data = await res.json();
+      console.log(data);
+      if (data.msg === "jwt expired") {
+        try {
+          console.log("2");
+          const response = await axios.get(
+            "http://localhost:3000/api/refresh-token",
+            { withCredentials: true }
+          );
+          console.log(response);
+          const userinfo = { ...response.data, user };
+          dispatch(login(userinfo));
+          console.log("3");
+          const res = await fetch(
+            `http://localhost:3000/api/orders/track-order/${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${userinfo.accessToken}`,
+              },
+              credentials: "include",
+            }
+          );
+          const data = await res.json();
+          console.log(data);
+          return data;
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        return data;
       }
-    );
-    const data = await res.json();
-    return data;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {

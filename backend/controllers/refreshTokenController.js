@@ -6,6 +6,7 @@ const refreshToken = async (req, res) => {
     console.log(req.cookies);
     const cookies = req.cookies;
     if (!cookies?.refreshToken) {
+      console.log("no cookie");
       res.sendStatus(401);
     } else {
       const refreshToken = cookies.refreshToken;
@@ -24,7 +25,7 @@ const refreshToken = async (req, res) => {
           const accessToken = jwt.sign(
             { UserInfo: { username: decoded.username, roles } },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: "30s" }
+            { expiresIn: "20s" }
           );
           res.status(200).json({ accessToken });
         }
@@ -32,7 +33,7 @@ const refreshToken = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.sendStatus(400);
+    res.sendStatus(401);
   }
 };
 
