@@ -16,11 +16,10 @@ import MenuDetails from "./pages/MenuDetails";
 import OrderTrack from "./pages/OrderTrack";
 import AdminRoute from "./components/ProtectedRouteAdmin";
 import UserRoute from "./components/ProtectedRouteUser";
-//import Profile from "./pages/Profile";
+import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 //import OrderHistory from "./pages/OrderHistory";
 import CurrentOrders from "./pages/CurrentOrders";
-// import Checkout from "./pages/Checkout";
 
 export default function App() {
   return (
@@ -40,12 +39,12 @@ export default function App() {
           <Route path="/current-orders" element={<CurrentOrders />} />
         </Route>
         <Route element={<UserRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/track/:id" element={<OrderTrack />} />
-          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
-        {/* <Route path="/profile" element={<Profile />} /> */}
 
         {/* <Route path="/order-history" element={<OrderHistory />} /> */}
       </Routes>

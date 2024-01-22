@@ -6,6 +6,7 @@ const {
   orderDelivered,
   newOrderForCurrentUser,
   trackOrder,
+  orderHistory,
 } = require("../controllers/orderController");
 const { authMiddleware } = require("../middlewares/authMiddleware");
 const verifyRoles = require("../middlewares/verifyRoles");
@@ -48,6 +49,12 @@ router.get(
   authMiddleware,
   verifyRoles(rolesList.User),
   trackOrder
+);
+router.get(
+  "/order-history/:id",
+  authMiddleware,
+  verifyRoles(rolesList.User),
+  orderHistory
 );
 
 module.exports = router;

@@ -1,24 +1,22 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../redux/authSlice";
+import { logout } from "../redux/slices/authSlice";
 
 export default function Profile() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const handleLogout = async () => {
     try {
-      await axios
-        .post("http://localhost:3000/api/auth/logout", {
-          withCredentials: true,
-        })
-        .then((data) => {
-          dispatch(logout());
-          console.log(data);
-        })
-        .catch((err) => {
-          console.log(err.response.data.msg);
-        });
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/logout",
+        {},
+        { withCredentials: true }
+      );
+      dispatch(logout());
+      navigate("/sign-in");
     } catch (error) {
       console.log(error);
     }

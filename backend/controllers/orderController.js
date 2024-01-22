@@ -106,6 +106,25 @@ const trackOrder = async (req, res) => {
   }
 };
 
+const orderHistory = async (req, res) => {
+  try {
+    const username = req.params.id;
+    if (!username) {
+      return res.status(400).json({ msg: "Id is required!" });
+    }
+    const orders = await Order.find({ username });
+    if (orders.length === 0) {
+      return res.status(200).json({ msg: "No previous orders!" });
+    }
+    if (req.user !== orders[0].username) {
+      return res.sendStatus(403);
+    }
+    res.status(200).send(orders);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Oops!! Something went wrong!" });
+  }
+};
 module.exports = {
   newOrder,
   payment,
@@ -113,4 +132,5 @@ module.exports = {
   orderDelivered,
   newOrderForCurrentUser,
   trackOrder,
+  orderHistory,
 };
