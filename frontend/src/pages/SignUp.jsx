@@ -16,7 +16,7 @@ export default function SignUP() {
     e.preventDefault();
     try {
       await axios
-        .post("http://localhost:3000/api/auth/signup", {
+        .post("https://dallas-dosa.onrender.com/api/auth/signup", {
           username,
           email,
           address,

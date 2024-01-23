@@ -20,11 +20,14 @@ export default function MenuDetails() {
   useEffect(() => {
     const fetchFoodDetails = async () => {
       setLoading(true);
-      const res = await fetch(`http://localhost:3000/api/products/find/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `https://dallas-dosa.onrender.com/api/products/find/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const data = await res.json();
       setFoodsDetails(data);
     };
@@ -59,7 +62,7 @@ export default function MenuDetails() {
           <div className="flex ">
             <img
               className="h-[500px] rounded-3xl w-[900px] object-cover"
-              src={`http://localhost:3000/images/${foodDetails.imageLink}`}
+              src={`https://dallas-dosa.onrender.com/images/${foodDetails.imageLink}`}
               alt="food item cover image"
             />
           </div>
