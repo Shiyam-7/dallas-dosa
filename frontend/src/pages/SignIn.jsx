@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import signin from "../assets/images/sign-in.png";
 import { useState } from "react";
@@ -13,14 +13,20 @@ export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setError("");
+  }, [email, password]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(
-        "https://dallas-dosa.onrender.com/api/auth/login",
+        "http://localhost:3000/api/auth/login",
         {
           email,
           password,
@@ -29,7 +35,7 @@ export default function SignIn() {
           withCredentials: true,
         }
       );
-      console.log(response.data);
+      console.log(response);
       const decoded = jwtDecode(response.data.accessToken);
       console.log(decoded);
       const data = {
@@ -37,9 +43,27 @@ export default function SignIn() {
         user: decoded.UserInfo,
       };
       dispatch(login(data));
+      setLoading(false);
+      toast.success("Logged In Successfully!");
       navigate("/");
     } catch (error) {
+      setLoading(false);
       console.log(error);
+      if (error.response.data.msg === "No User Found!") {
+        return setError(error.response.data.msg);
+      }
+      if (error.response.data.msg === "Incorrect password!") {
+        return setError(error.response.data.msg);
+      }
+      if (
+        error.response.data.msg ===
+        "Oops!! Something went wrong! Please try again."
+      ) {
+        return setError(error.response.data.msg);
+      }
+      if (error.response.data.msg === "Invalid Email or Password!") {
+        return setError(error.response.data.msg);
+      }
     }
   };
 
@@ -86,9 +110,24 @@ export default function SignIn() {
               </div>
             </div>
             <div className="flex flex-col items-center mt-5 gap-5">
-              <button className="w-auto bg-amber-400 hover:opacity-95 py-1 px-7 rounded-2xl">
-                Login
-              </button>
+              {error && (
+                <div>
+                  <p className="text-red-700">{error}</p>
+                </div>
+              )}
+              {loading ? (
+                <button
+                  disabled
+                  className="w-auto bg-amber-400 opacity-95 py-1 px-7 rounded-2xl"
+                >
+                  Loading...
+                </button>
+              ) : (
+                <button className="w-auto bg-amber-400 hover:opacity-95 py-1 px-7 rounded-2xl">
+                  Login
+                </button>
+              )}
+
               <p>
                 New to Dallas Dosa?{" "}
                 <Link to={"/sign-up"}>
@@ -97,11 +136,6 @@ export default function SignIn() {
               </p>
             </div>
           </form>
-          {error && (
-            <div className="text-red-700">
-              Wrong credentials! Try different ones
-            </div>
-          )}
         </div>
         <div>
           <img

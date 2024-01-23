@@ -1,7 +1,8 @@
 import React from "react";
 import axios from "axios";
 import signup from "../assets/images/sign-up.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUP() {
@@ -9,32 +10,46 @@ export default function SignUP() {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setError("");
+  }, [email, password, username, address]);
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      await axios
-        .post("https://dallas-dosa.onrender.com/api/auth/signup", {
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/signup",
+        {
           username,
           email,
           address,
           password,
-        })
-        .then((data) => {
-          console.log(data.data.msg);
-          navigate("/sign-in");
-        })
-        .catch((err) => {
-          console.log(err.response.data.msg);
-        });
+        }
+      );
+      console.log(response);
+      setLoading(false);
+      toast.success("Signed Up Successfully!");
+      navigate("/sign-in");
     } catch (error) {
+      setLoading(false);
       console.log(error);
-      setError(true);
-      setTimeout(() => {
-        setError(false);
-      }, 3000);
+      if (error.response.data.msg === "User already exists!") {
+        return setError(error.response.data.msg);
+      }
+      if (
+        error.response.data.msg ===
+        "Oops!! Something went wrong! Please try again."
+      ) {
+        return setError(error.response.data.msg);
+      }
+      if (error.response.data.msg === "Invalid Email or Password!") {
+        return setError(error.response.data.msg);
+      }
     }
   };
   return (
@@ -92,9 +107,23 @@ export default function SignUP() {
               </div>
             </div>
             <div className="flex flex-col items-center mt-5 gap-5">
-              <button className="w-auto bg-amber-400 hover:opacity-95 py-1 px-7 rounded-2xl">
-                Register
-              </button>
+              {error && (
+                <div>
+                  <p className="text-red-700">{error}</p>
+                </div>
+              )}
+              {loading ? (
+                <button
+                  disabled
+                  className="w-auto bg-amber-400 opacity-95 py-1 px-7 rounded-2xl"
+                >
+                  Loading...
+                </button>
+              ) : (
+                <button className="w-auto bg-amber-400 hover:opacity-95 py-1 px-7 rounded-2xl">
+                  Login
+                </button>
+              )}
               <p>
                 Returning user?{" "}
                 <Link to={"/sign-in"}>
@@ -103,11 +132,6 @@ export default function SignUP() {
               </p>
             </div>
           </form>
-          {error && (
-            <div className="text-red-700">
-              Wrong credentials! Try different ones.
-            </div>
-          )}
         </div>
         <div className="flex items-center justify-center">
           <img

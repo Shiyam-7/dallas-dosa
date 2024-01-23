@@ -25,7 +25,9 @@ const signup = async (req, res) => {
           password: hashedPassword,
         });
         if (!newUser) {
-          res.status(500).json({ msg: "Oops!! Something went wrong!" });
+          res
+            .status(500)
+            .json({ msg: "Oops!! Something went wrong! Please try again." });
         } else {
           const { password, roles, ...userInfo } = newUser._doc;
           res.status(201).json({ msg: "User created successfully!", userInfo });
@@ -33,13 +35,14 @@ const signup = async (req, res) => {
       }
     } else {
       res.status(400).json({
-        msg: "Invalid" + " " + validatedRequest.error.issues[0].path[0] + "!",
+        msg: "Invalid Email or Password!",
       });
     }
-    /*   + " " + validatedRequest.error.issues[0].message */
   } catch (error) {
     console.log(error);
-    res.status(400).json({ msg: "Incorrect inputs!" });
+    res
+      .status(500)
+      .json({ msg: "Oops!! Something went wrong! Please try again." });
   }
 };
 const login = async (req, res) => {
@@ -51,14 +54,14 @@ const login = async (req, res) => {
       });
 
       if (!isExists) {
-        res.status(401).json({ msg: "Unauthenticated!" });
+        res.status(404).json({ msg: "No User Found!" });
       } else {
         const validPassword = bcryptjs.compareSync(
           req.body.password,
           isExists.password
         );
         if (!validPassword) {
-          res.status(401).json({ msg: "Invalid password!" });
+          res.status(401).json({ msg: "Incorrect password!" });
         } else {
           const roles = Object.values(isExists.roles);
           const accessToken = jwt.sign(
@@ -85,9 +88,9 @@ const login = async (req, res) => {
           );
 
           if (!loginUser) {
-            res
-              .status(500)
-              .json({ msg: "Oops!! Something went wrong on our side!" });
+            res.status(500).json({
+              msg: "Oops!! Something went wrong! Please try again.",
+            });
           } else {
             res
               .status(200)
@@ -102,14 +105,16 @@ const login = async (req, res) => {
         }
       }
     } else {
-      res.status(401).json({
-        msg: "Invalid" + " " + validatedRequest.error.issues[0].path[0] + "!",
+      res.status(400).json({
+        msg: "Invalid Email or Password!",
       });
     }
     /*   + " " + validatedRequest.error.issues[0].message */
   } catch (error) {
     console.log(error);
-    res.status(400).json({ msg: "Incorrect inputs!" });
+    res
+      .status(500)
+      .json({ msg: "Oops!! Something went wrong! Please try again." });
   }
 };
 

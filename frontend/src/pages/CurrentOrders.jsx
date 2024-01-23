@@ -12,7 +12,7 @@ export default function CurrentOrders() {
   const getCurrentOrders = async () => {
     try {
       const res = await fetch(
-        "https://dallas-dosa.onrender.com/api/orders/getCurrentOrders",
+        "http://localhost:3000/api/orders/getCurrentOrders",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -25,14 +25,14 @@ export default function CurrentOrders() {
       if (data.msg === "jwt expired") {
         try {
           const response = await axios.get(
-            "https://dallas-dosa.onrender.com/api/refresh-token",
+            "http://localhost:3000/api/refresh-token",
             { withCredentials: true }
           );
           console.log(response);
           const userinfo = { ...response.data, user };
           dispatch(login(userinfo));
           const res = await fetch(
-            "https://dallas-dosa.onrender.com/api/orders/getCurrentOrders",
+            "http://localhost:3000/api/orders/getCurrentOrders",
             {
               headers: {
                 Authorization: `Bearer ${userinfo.accessToken}`,
@@ -61,7 +61,7 @@ export default function CurrentOrders() {
   const orderDelivered = async (id) => {
     try {
       const res = await fetch(
-        "https://dallas-dosa.onrender.com/api/orders/orderDelivered",
+        "http://localhost:3000/api/orders/orderDelivered",
         {
           headers: {
             "Content-Type": "application/json",
@@ -81,7 +81,7 @@ export default function CurrentOrders() {
         try {
           console.log("2");
           const response = await axios.get(
-            "https://dallas-dosa.onrender.com/api/refresh-token",
+            "http://localhost:3000/api/refresh-token",
             { withCredentials: true }
           );
           console.log(response);
@@ -89,7 +89,7 @@ export default function CurrentOrders() {
           dispatch(login(userinfo));
           console.log("3");
           const res = await fetch(
-            "https://dallas-dosa.onrender.com/api/orders/orderDelivered",
+            "http://localhost:3000/api/orders/orderDelivered",
             {
               headers: {
                 "Content-Type": "application/json",

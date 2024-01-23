@@ -18,9 +18,7 @@ export default function Menu() {
     setLoading(true);
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(
-          "https://dallas-dosa.onrender.com/api/products"
-        );
+        const response = await axios.get("http://localhost:3000/api/products");
         setProducts(response.data);
         setLoading(false);
       } catch (error) {
@@ -87,7 +85,7 @@ export default function Menu() {
                   <div className="flex">
                     <img
                       className="h-[250px] w-[300px] object-cover"
-                      src={`https://dallas-dosa.onrender.com/images/${item.imageLink}`}
+                      src={`http://localhost:3000/images/${item.imageLink}`}
                       alt="food item cover image"
                     />
                   </div>
