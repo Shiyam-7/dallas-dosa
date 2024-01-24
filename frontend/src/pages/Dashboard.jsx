@@ -29,7 +29,7 @@ export default function Dashboard() {
     navigate("/sign-in");
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/logout",
+        "https://dallas-dosa.onrender.com/api/auth/logout",
         {},
         { withCredentials: true }
       );
