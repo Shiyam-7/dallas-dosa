@@ -49,11 +49,13 @@ export default function MenuDetails() {
   return (
     <div className="flex">
       {loading ? (
-        <TailSpin // Type of spinner
-          className="w-[100%] h-[100%]"
-          color="#4fa94d"
-          ariaLabel="tail-spin-loading"
-        />
+        <div className="flex w-full items-center justify-center my-10">
+          <TailSpin // Type of spinner
+            className="w-[100%] h-[100%]"
+            color="#FFBF00"
+            ariaLabel="tail-spin-loading"
+          />
+        </div>
       ) : (
         <div className="flex w-[950px] my-10 mx-auto  flex-col p-3 text-white">
           <div className="flex ">

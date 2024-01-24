@@ -13,7 +13,6 @@ import { toast } from "react-toastify";
 export default function Dashboard() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => state.auth);
   useEffect(() => {
     const role = user.roles.find((i) => i === 5150);
@@ -25,17 +24,15 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleLogout = async () => {
-    setLoading(true);
+    dispatch(logout());
+    toast.success("Logged Out Successfully!");
+    navigate("/sign-in");
     try {
       const response = await axios.post(
         "http://localhost:3000/api/auth/logout",
         {},
         { withCredentials: true }
       );
-      dispatch(logout());
-      setLoading(false);
-      toast.success("Logged Out Successfully!");
-      navigate("/sign-in");
     } catch (error) {
       console.log(error);
     }

@@ -6,10 +6,11 @@ import axios from "axios";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoStarSharp } from "react-icons/io5";
 import { MdAdd } from "react-icons/md";
+import { TailSpin } from "react-loader-spinner";
 
 export default function Menu() {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const [products, setProducts] = useState([]);
   const { category } = useParams();
   const navigate = useNavigate();
@@ -23,8 +24,8 @@ export default function Menu() {
         setLoading(false);
       } catch (error) {
         console.log(error);
+        setError(error.message);
         setLoading(false);
-        setError(true);
       }
     };
     fetchProducts();
@@ -68,9 +69,13 @@ export default function Menu() {
         </div>
       </div>
       {loading ? (
-        <p>loding...</p>
-      ) : error ? (
-        <p>error</p>
+        <div className="flex cursor-pointer text-2xl w-full justify-center gap-10 my-20 flex-wrap">
+          <TailSpin // Type of spinner
+            className="w-[100%] h-[100%]"
+            color="#FFBF00"
+            ariaLabel="tail-spin-loading"
+          />
+        </div>
       ) : products.length !== 0 ? (
         products.map((item) => (
           <div key={item._id}>
