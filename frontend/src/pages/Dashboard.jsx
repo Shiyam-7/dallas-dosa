@@ -44,7 +44,7 @@ export default function Dashboard() {
         <p className="uppercase font-bold text-3xl">Dashboard</p>
       </div>
       <div className="flex my-10 flex-col justify-center items-center gap-10">
-        <div className="flex  gap-10">
+        <div className="flex max-md:flex-col  gap-10">
           {isAdmin ? (
             <Link to={"/current-orders"}>
               <div className="flex gap-5 flex-col justify-center items-center">
@@ -68,7 +68,7 @@ export default function Dashboard() {
           </Link>
         </div>
         {isAdmin && (
-          <div className="flex  gap-10">
+          <div className="flex max-md:flex-col gap-10">
             <Link to={"/create-item"}>
               <div className="flex gap-5 flex-col justify-center items-center">
                 <MdOutlineCreateNewFolder className="fill-amber-400 h-[200px] w-[200px]" />

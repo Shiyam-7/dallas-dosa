@@ -135,7 +135,7 @@ export default function SignUP() {
         </div>
         <div className="flex items-center justify-center">
           <img
-            className="w-[29rem] h-[36rem] mx-10 "
+            className="w-[29rem] max-md:hidden h-[36rem] mx-10 "
             src={signup}
             alt="sign up image"
           />

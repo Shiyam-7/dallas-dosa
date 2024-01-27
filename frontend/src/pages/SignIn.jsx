@@ -139,7 +139,7 @@ export default function SignIn() {
         </div>
         <div>
           <img
-            className="w-[22rem] h-[29rem] mx-10"
+            className="w-[22rem] max-md:hidden h-[29rem] mx-10"
             src={signin}
             alt="sign up image"
           />
