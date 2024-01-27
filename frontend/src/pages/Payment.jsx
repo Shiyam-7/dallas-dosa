@@ -19,7 +19,7 @@ export default function Payment() {
       setLoading(true);
       try {
         const res = await fetch(
-          "http://localhost:3000/api/orders/newOrderForCurrentUser",
+          "https://dallas-dosa.onrender.com/api/orders/newOrderForCurrentUser",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ export default function Payment() {
           try {
             console.log("2");
             const response = await axios.get(
-              "http://localhost:3000/api/refresh-token",
+              "https://dallas-dosa.onrender.com/api/refresh-token",
               { withCredentials: true }
             );
             console.log(response);
@@ -40,7 +40,7 @@ export default function Payment() {
             dispatch(login(userinfo));
             console.log("3");
             const res = await fetch(
-              "http://localhost:3000/api/orders/newOrderForCurrentUser",
+              "https://dallas-dosa.onrender.com/api/orders/newOrderForCurrentUser",
               {
                 headers: {
                   Authorization: `Bearer ${userinfo.accessToken}`,
@@ -92,7 +92,7 @@ export default function Payment() {
                   <div>
                     <img
                       className="w-[14rem] object-cover h-[9rem]"
-                      src={`http://localhost:3000/images/${product.imageLink}`}
+                      src={`https://dallas-dosa.onrender.com/images/${product.imageLink}`}
                       alt="product image"
                     />
                   </div>
