@@ -20,14 +20,11 @@ export default function MenuDetails() {
   useEffect(() => {
     const fetchFoodDetails = async () => {
       setLoading(true);
-      const res = await fetch(
-        `https://dallas-dosa.onrender.com/api/products/find/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`http://localhost:3000/api/products/find/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await res.json();
       setFoodsDetails(data);
     };
@@ -50,7 +47,7 @@ export default function MenuDetails() {
     dispatch(addToCart(data));
   };
   return (
-    <div className="flex">
+    <div className="flex w-full">
       {loading ? (
         <div className="flex w-full items-center justify-center my-10">
           <TailSpin // Type of spinner
@@ -60,11 +57,11 @@ export default function MenuDetails() {
           />
         </div>
       ) : (
-        <div className="flex w-[950px] my-10 mx-auto  flex-col p-3 text-white">
+        <div className="flex  justify-center items-center w-[950px] my-10 mx-auto  flex-col p-3 text-white">
           <div className="flex ">
             <img
-              className="h-[500px] rounded-3xl w-[900px] object-cover"
-              src={`https://dallas-dosa.onrender.com/images/${foodDetails.imageLink}`}
+              className="h-[400px]  rounded-3xl  object-cover"
+              src={`http://localhost:3000/images/${foodDetails.imageLink}`}
               alt="food item cover image"
             />
           </div>

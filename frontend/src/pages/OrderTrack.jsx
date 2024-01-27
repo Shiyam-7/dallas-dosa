@@ -21,7 +21,7 @@ export default function OrderTrack() {
     setLoading(true);
     try {
       const res = await fetch(
-        `https://dallas-dosa.onrender.com/api/orders/track-order/${id}`,
+        `http://localhost:3000/api/orders/track-order/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -35,7 +35,7 @@ export default function OrderTrack() {
         try {
           console.log("2");
           const response = await axios.get(
-            "https://dallas-dosa.onrender.com/api/refresh-token",
+            "http://localhost:3000/api/refresh-token",
             { withCredentials: true }
           );
           console.log(response);
@@ -43,7 +43,7 @@ export default function OrderTrack() {
           dispatch(login(userinfo));
           console.log("3");
           const res = await fetch(
-            `https://dallas-dosa.onrender.com/api/orders/track-order/${id}`,
+            `http://localhost:3000/api/orders/track-order/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${userinfo.accessToken}`,
@@ -94,58 +94,51 @@ export default function OrderTrack() {
         </div>
       ) : (
         order && (
-          <div className="text-white">
-            <div className="flex items-center justify-center my-10">
-              {/* paste card below */}
+          <div className="flex my-10 text-white max-md:flex-col justify-center items-center gap-5">
+            <div className="flex flex-col gap-5">
+              <div className="items-center justify-start text-xl font-bold">
+                Order Placed:
+              </div>
+              <div className="items-center justify-start text-xl font-bold">
+                Order ID : {order._id}
+              </div>
+              <div className="items-center justify-start text-xl font-bold">
+                Payment ID : {order.paymentId}
+              </div>
+              <div className="items-center justify-start text-xl font-bold">
+                {order.products.length} items:
+              </div>
+              <div className="flex flex-col ">
+                {order.products.map((item) => (
+                  <div className="flex flex-wrap " key={item._id}>
+                    <p>{item.title} - </p> <p> quantity: {item.quantity}</p>
+                  </div>
+                ))}
 
-              {/* card ends above */}
-            </div>
-            <div className="flex justify-center items-center gap-5">
-              <div className="flex flex-col gap-5">
-                <div className="items-center justify-start text-xl font-bold">
-                  Order Placed:
-                </div>
-                <div className="items-center justify-start text-xl font-bold">
-                  Order ID : {order._id}
-                </div>
-                <div className="items-center justify-start text-xl font-bold">
-                  Payment ID : {order.paymentId}
-                </div>
-                <div className="items-center justify-start text-xl font-bold">
-                  {order.products.length} items:
-                </div>
-                <div className="flex flex-col ">
-                  {order.products.map((item) => (
-                    <div className="flex flex-wrap " key={item._id}>
-                      <p>{item.title} - </p> <p> quantity: {item.quantity}</p>
-                    </div>
-                  ))}
-
-                  <div className="flex items-start mt-3 flex-col gap-6">
-                    <div className="flex items-center">
-                      <MdOutlineAttachMoney className=" h-5 w-5 fill-white" />
-                      <p>{order.totalPrice}</p>
-                    </div>
+                <div className="flex items-start mt-3 flex-col gap-6">
+                  <div className="flex items-center">
+                    <MdOutlineAttachMoney className=" h-5 w-5 fill-white" />
+                    <p>{order.totalPrice}</p>
                   </div>
                 </div>
-                <div className="flex w-full flex-col gap-5">
-                  <form action="">
-                    <div className="flex">
-                      <p>Your Name: {order.username}</p>
-                    </div>
-                    <div className="flex mt-2">
-                      <p>Delivery Address: {order.address}</p>
-                    </div>
-                  </form>
-                </div>
               </div>
-              <div className="flex flex-col justify-center items-center gap-5">
-                <div className="flex">
-                  <p className="text-2xl font-bold">Your Location</p>
-                </div>
-                <div className="flex w-full justify-center items-center">
-                  <Map readonly={true} location={order.addressLatLng} />
-                </div>
+              <div className="flex w-full flex-col gap-5">
+                <form action="">
+                  <div className="flex">
+                    <p>Your Name: {order.username}</p>
+                  </div>
+                  <div className="flex mt-2">
+                    <p>Delivery Address: {order.address}</p>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div className="flex flex-col justify-center items-center gap-5">
+              <div className="flex">
+                <p className="text-2xl font-bold">Your Location</p>
+              </div>
+              <div className="flex w-full justify-center items-center">
+                <Map readonly={true} location={order.addressLatLng} />
               </div>
             </div>
           </div>

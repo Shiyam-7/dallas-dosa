@@ -38,7 +38,7 @@ export default function CreateItem() {
         formData.append("filename", filename);
         formData.append("image", image);
         console.log(formData);
-        await fetch(`https://dallas-dosa.onrender.com/upload/image`, {
+        await fetch(`http://localhost:3000/upload/image`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -49,7 +49,7 @@ export default function CreateItem() {
 
       // uploading product
       const res = await axios.post(
-        `https://dallas-dosa.onrender.com/api/products/create-product`,
+        `http://localhost:3000/api/products/create-product`,
         {
           title,
           description,
@@ -67,7 +67,7 @@ export default function CreateItem() {
       );
 
       const food = res;
-      navigate(`/menu`);
+      navigate(`/category`);
     } catch (error) {
       console.log(error);
     }

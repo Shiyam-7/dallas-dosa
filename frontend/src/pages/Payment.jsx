@@ -19,7 +19,7 @@ export default function Payment() {
       setLoading(true);
       try {
         const res = await fetch(
-          "https://dallas-dosa.onrender.com/api/orders/newOrderForCurrentUser",
+          "http://localhost:3000/api/orders/newOrderForCurrentUser",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ export default function Payment() {
           try {
             console.log("2");
             const response = await axios.get(
-              "https://dallas-dosa.onrender.com/api/refresh-token",
+              "http://localhost:3000/api/refresh-token",
               { withCredentials: true }
             );
             console.log(response);
@@ -40,7 +40,7 @@ export default function Payment() {
             dispatch(login(userinfo));
             console.log("3");
             const res = await fetch(
-              "https://dallas-dosa.onrender.com/api/orders/newOrderForCurrentUser",
+              "http://localhost:3000/api/orders/newOrderForCurrentUser",
               {
                 headers: {
                   Authorization: `Bearer ${userinfo.accessToken}`,
@@ -81,7 +81,7 @@ export default function Payment() {
         </div>
       ) : (
         <>
-          <div className="flex items-center justify-center my-10">
+          <div className="flex flex-wrap justify-center items-center max-md:flex-col  my-10">
             {/* paste card below */}
             {order.products.length > 0 ? (
               order.products.map((product) => (
@@ -92,7 +92,7 @@ export default function Payment() {
                   <div>
                     <img
                       className="w-[14rem] object-cover h-[9rem]"
-                      src={`https://dallas-dosa.onrender.com/images/${product.imageLink}`}
+                      src={`http://localhost:3000/images/${product.imageLink}`}
                       alt="product image"
                     />
                   </div>
@@ -122,7 +122,7 @@ export default function Payment() {
             )}
             {/* card ends above */}
           </div>
-          <div className="flex justify-center items-center gap-5">
+          <div className="flex max-md:flex-col justify-center items-center gap-5">
             <div className="flex flex-col gap-5">
               <div className="items-center justify-start text-xl font-bold">
                 {order.products.length} items:
@@ -172,7 +172,7 @@ export default function Payment() {
               </div>
             </div>
           </div>
-          <div className="">
+          <div className="flex my-10 items-center justify-center">
             <button>
               <Paypal order={order} />
             </button>

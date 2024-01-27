@@ -42,37 +42,34 @@ export default function Cart() {
   const handleOrder = async () => {
     try {
       setLoading(true);
-      const res = await fetch(
-        "https://dallas-dosa.onrender.com/api/orders/new-order",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          method: "POST",
-          credentials: "include",
-          body: JSON.stringify({
-            username: user.username,
-            address,
-            addressLatLng,
-            totalPrice,
-            products: cartItems,
-          }),
-        }
-      );
+      const res = await fetch("http://localhost:3000/api/orders/new-order", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify({
+          username: user.username,
+          address,
+          addressLatLng,
+          totalPrice,
+          products: cartItems,
+        }),
+      });
       const data = await res.json();
       console.log(data);
       if (data.msg === "jwt expired") {
         try {
           const response = await axios.get(
-            "https://dallas-dosa.onrender.com/api/refresh-token",
+            "http://localhost:3000/api/refresh-token",
             { withCredentials: true }
           );
           console.log(response);
           const userinfo = { ...response.data, user };
           dispatch(login(userinfo));
           const res = await fetch(
-            "https://dallas-dosa.onrender.com/api/orders/new-order",
+            "http://localhost:3000/api/orders/new-order",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -119,18 +116,18 @@ export default function Cart() {
       ) : (
         <>
           <div className="font-semibold text-3xl">Checkout</div>
-          <div className="flex my-10">
+          <div className="flex flex-wrap justify-center items-center max-md:flex-col  my-10">
             {/* paste card below */}
             {cartItems.length > 0 ? (
               cartItems.map((product) => (
                 <div
                   key={product._id}
-                  className="flex flex-wrap gap-5 m-4 border border-amber-400 p-5"
+                  className="flex  gap-5 m-4 border border-amber-400 p-5"
                 >
-                  <div>
+                  <div className="flex flex-shrink-0">
                     <img
-                      className="w-[14rem] object-cover h-[9rem]"
-                      src={`https://dallas-dosa.onrender.com/images/${product.imageLink}`}
+                      className="flex w-[150px] h-[150px]  object-cover"
+                      src={`http://localhost:3000/images/${product.imageLink}`}
                       alt="product image"
                     />
                   </div>
@@ -160,7 +157,7 @@ export default function Cart() {
             )}
             {/* card ends above */}
           </div>
-          <div className="flex justify-center items-center gap-5">
+          <div className="flex max-md:flex-col justify-center items-center gap-5">
             <div className="flex flex-col gap-5">
               <div className="items-center justify-start text-xl font-bold">
                 {cartItems.length} items:

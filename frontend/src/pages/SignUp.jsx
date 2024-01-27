@@ -23,7 +23,7 @@ export default function SignUP() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://dallas-dosa.onrender.com/api/auth/signup",
+        "http://localhost:3000/api/auth/signup",
         {
           username,
           email,

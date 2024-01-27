@@ -16,7 +16,7 @@ export default function CurrentOrders() {
     setLoading(true);
     try {
       const res = await fetch(
-        "https://dallas-dosa.onrender.com/api/orders/getCurrentOrders",
+        "http://localhost:3000/api/orders/getCurrentOrders",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -29,14 +29,14 @@ export default function CurrentOrders() {
       if (data.msg === "jwt expired") {
         try {
           const response = await axios.get(
-            "https://dallas-dosa.onrender.com/api/refresh-token",
+            "http://localhost:3000/api/refresh-token",
             { withCredentials: true }
           );
           console.log(response);
           const userinfo = { ...response.data, user };
           dispatch(login(userinfo));
           const res = await fetch(
-            "https://dallas-dosa.onrender.com/api/orders/getCurrentOrders",
+            "http://localhost:3000/api/orders/getCurrentOrders",
             {
               headers: {
                 Authorization: `Bearer ${userinfo.accessToken}`,
@@ -70,7 +70,7 @@ export default function CurrentOrders() {
     setLoading(true);
     try {
       const res = await fetch(
-        "https://dallas-dosa.onrender.com/api/orders/orderDelivered",
+        "http://localhost:3000/api/orders/orderDelivered",
         {
           headers: {
             "Content-Type": "application/json",
@@ -89,14 +89,14 @@ export default function CurrentOrders() {
       if (data.msg === "jwt expired") {
         try {
           const response = await axios.get(
-            "https://dallas-dosa.onrender.com/api/refresh-token",
+            "http://localhost:3000/api/refresh-token",
             { withCredentials: true }
           );
           console.log(response);
           const userinfo = { ...response.data, user };
           dispatch(login(userinfo));
           const res = await fetch(
-            "https://dallas-dosa.onrender.com/api/orders/orderDelivered",
+            "http://localhost:3000/api/orders/orderDelivered",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -145,7 +145,7 @@ export default function CurrentOrders() {
             currentOrders.map((order) => (
               <div
                 key={order._id}
-                className=" h-fit  my-5  flex border border-amber-400 p-3"
+                className=" h-fit  my-5  flex max-md:flex-col border border-amber-400 p-3"
               >
                 <div className="flex border border-amber-400 p-3 flex-col">
                   <div className="">
@@ -215,7 +215,7 @@ export default function CurrentOrders() {
                       </div>
                     ))}
                 </div>
-                <div className=" ml-3 items-center flex">
+                <div className=" ml-3 justify-center mt-3 items-center flex">
                   <button
                     onClick={() => {
                       orderDelivered(order._id);

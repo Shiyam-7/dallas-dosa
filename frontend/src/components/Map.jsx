@@ -13,7 +13,7 @@ import * as L from "leaflet";
 export default function Map({ readonly, location, onChange }) {
   return (
     <MapContainer
-      className="h-[400px]  w-[500px]"
+      className="h-[400px]  w-[400px]"
       center={[0, 0]}
       zoom={1}
       dragging={!readonly}

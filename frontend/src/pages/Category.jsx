@@ -18,14 +18,14 @@ export default function Category() {
 
   return (
     <div className="flex flex-col text-white">
-      <div className="flex gap-2 flex-col w-full items-center justify-center text-center">
+      <div className="flex gap-2  flex-col w-full items-center justify-center text-center">
         <div className="my-10">
           <p className="text-4xl font-bold">Our Menu</p>
         </div>
         <div className="text-2xl font-bold">
           <p>Pick and Try out</p>
         </div>
-        <div className="w-[770px]">
+        <div className="flex max-w-[770px] ">
           <p>
             Food, in the end, in our tradition, is something holy. It's not
             about nutrients and calories. It's about sharing. It's about
@@ -33,7 +33,7 @@ export default function Category() {
           </p>
         </div>
       </div>
-      <div className="flex flex-wrap justify-center items-center">
+      <div className="flex max-sm:flex-col flex-wrap justify-center items-center">
         {foodCategory.length !== 0 &&
           foodCategory.map((category) => (
             <div
@@ -43,18 +43,20 @@ export default function Category() {
                 )
               }
               key={category.id}
-              className="flex gap-10 w-1/2 justify-center mx-auto my-20 flex-wrap"
+              className="flex gap-10 max-md:w-[70%] border border-amber-400 w-[35%] justify-center mx-auto my-10"
             >
-              <div className="flex cursor-pointer border border-amber-400 py-1 px-10 items-center gap-3">
+              <div className="flex cursor-pointer py-2  items-center gap-5">
                 <div className="">
                   <img
-                    className="w-[150px] h-[150px]"
+                    className="h-[100px] object-cover "
                     src={regularDosa}
                     alt="dosa category image"
                   />
                 </div>
                 <div className="">
-                  <p className="text-xl font-semibold">{category.name}</p>
+                  <p className="text-lg sm:text-xl xl:text-2xl font-semibold">
+                    {category.name}
+                  </p>
                 </div>
               </div>
             </div>
