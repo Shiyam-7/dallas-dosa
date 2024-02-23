@@ -24,7 +24,7 @@ export default function SignUP() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://18.118.197.9:3000/api/auth/signup",
+        "https://testing.dallasdosa.com/api/auth/signup",
         {
           username,
           email,

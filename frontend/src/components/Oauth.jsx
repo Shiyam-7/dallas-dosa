@@ -17,14 +17,17 @@ const Oauth = () => {
     provider.setCustomParameters({ prompt: "select_account" });
     try {
       const resultsFromGoogle = await signInWithPopup(auth, provider);
-      const res = await fetch("http://18.118.197.9:3000/api/auth/google", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: resultsFromGoogle.user.displayName,
-          email: resultsFromGoogle.user.email,
-        }),
-      });
+      const res = await fetch(
+        "https://testing.dallasdosa.com/api/auth/google",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: resultsFromGoogle.user.displayName,
+            email: resultsFromGoogle.user.email,
+          }),
+        }
+      );
       const response = await res.json();
       console.log(response);
       if (response.msg === "User created successfully!") {

@@ -42,34 +42,37 @@ export default function Cart() {
   const handleOrder = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://18.118.197.9:3000/api/orders/new-order", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({
-          username: user.username,
-          address,
-          addressLatLng,
-          totalPrice,
-          products: cartItems,
-        }),
-      });
+      const res = await fetch(
+        "https://testing.dallasdosa.com/api/orders/new-order",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          method: "POST",
+          credentials: "include",
+          body: JSON.stringify({
+            username: user.username,
+            address,
+            addressLatLng,
+            totalPrice,
+            products: cartItems,
+          }),
+        }
+      );
       const data = await res.json();
       console.log(data);
       if (data.msg === "jwt expired") {
         try {
           const response = await axios.get(
-            "http://18.118.197.9:3000/api/refresh-token",
+            "https://testing.dallasdosa.com/api/refresh-token",
             { withCredentials: true }
           );
           console.log(response);
           const userinfo = { ...response.data, user };
           dispatch(login(userinfo));
           const res = await fetch(
-            "http://18.118.197.9:3000/api/orders/new-order",
+            "https://testing.dallasdosa.com/api/orders/new-order",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -127,7 +130,7 @@ export default function Cart() {
                   <div className="flex flex-shrink-0">
                     <img
                       className="flex w-[150px] h-[150px]  object-cover"
-                      src={`http://18.118.197.9:3000/images/${product.imageLink}`}
+                      src={`https://testing.dallasdosa.com/images/${product.imageLink}`}
                       alt="product image"
                     />
                   </div>

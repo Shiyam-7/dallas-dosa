@@ -38,7 +38,7 @@ export default function CreateItem() {
         formData.append("filename", filename);
         formData.append("image", image);
         console.log(formData);
-        await fetch(`http://18.118.197.9:3000/upload/image`, {
+        await fetch(`https://testing.dallasdosa.com/upload/image`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -49,7 +49,7 @@ export default function CreateItem() {
 
       // uploading product
       const res = await axios.post(
-        `http://18.118.197.9:3000/api/products/create-product`,
+        `https://testing.dallasdosa.com/api/products/create-product`,
         {
           title,
           description,

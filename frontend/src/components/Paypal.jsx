@@ -47,24 +47,27 @@ function Buttons({ order }) {
 
   const paymentRequest = async (id) => {
     try {
-      const res = await fetch("http://18.118.197.9:3000/api/orders/payment", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        credentials: "include",
-        method: "PATCH",
-        body: JSON.stringify({
-          paymentId: id,
-        }),
-      });
+      const res = await fetch(
+        "https://testing.dallasdosa.com/api/orders/payment",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+          method: "PATCH",
+          body: JSON.stringify({
+            paymentId: id,
+          }),
+        }
+      );
       const data = await res.json();
       console.log(data);
       if (data.msg === "jwt expired") {
         try {
           console.log("2");
           const response = await axios.get(
-            "http://18.118.197.9:3000/api/refresh-token",
+            "https://testing.dallasdosa.com/api/refresh-token",
             { withCredentials: true }
           );
           console.log(response);
@@ -72,7 +75,7 @@ function Buttons({ order }) {
           dispatch(login(userinfo));
           console.log("3");
           const res = await fetch(
-            "http://18.118.197.9:3000/api/orders/payment",
+            "https://testing.dallasdosa.com/api/orders/payment",
             {
               headers: {
                 "Content-Type": "application/json",

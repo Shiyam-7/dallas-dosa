@@ -21,7 +21,7 @@ export default function MenuDetails() {
     const fetchFoodDetails = async () => {
       setLoading(true);
       const res = await fetch(
-        `http://18.118.197.9:3000/api/products/find/${id}`,
+        `https://testing.dallasdosa.com/api/products/find/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ export default function MenuDetails() {
           <div className="flex ">
             <img
               className="h-[400px]  rounded-3xl  object-cover"
-              src={`http://18.118.197.9:3000/images/${foodDetails.imageLink}`}
+              src={`https://testing.dallasdosa.com/images/${foodDetails.imageLink}`}
               alt="food item cover image"
             />
           </div>
