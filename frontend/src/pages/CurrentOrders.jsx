@@ -16,7 +16,7 @@ export default function CurrentOrders() {
     setLoading(true);
     try {
       const res = await fetch(
-        "http://localhost:3000/api/orders/getCurrentOrders",
+        "http://18.118.197.9:3000/api/orders/getCurrentOrders",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -29,14 +29,14 @@ export default function CurrentOrders() {
       if (data.msg === "jwt expired") {
         try {
           const response = await axios.get(
-            "http://localhost:3000/api/refresh-token",
+            "http://18.118.197.9:3000/api/refresh-token",
             { withCredentials: true }
           );
           console.log(response);
           const userinfo = { ...response.data, user };
           dispatch(login(userinfo));
           const res = await fetch(
-            "http://localhost:3000/api/orders/getCurrentOrders",
+            "http://18.118.197.9:3000/api/orders/getCurrentOrders",
             {
               headers: {
                 Authorization: `Bearer ${userinfo.accessToken}`,
@@ -70,7 +70,7 @@ export default function CurrentOrders() {
     setLoading(true);
     try {
       const res = await fetch(
-        "http://localhost:3000/api/orders/orderDelivered",
+        "http://18.118.197.9:3000/api/orders/orderDelivered",
         {
           headers: {
             "Content-Type": "application/json",
@@ -89,14 +89,14 @@ export default function CurrentOrders() {
       if (data.msg === "jwt expired") {
         try {
           const response = await axios.get(
-            "http://localhost:3000/api/refresh-token",
+            "http://18.118.197.9:3000/api/refresh-token",
             { withCredentials: true }
           );
           console.log(response);
           const userinfo = { ...response.data, user };
           dispatch(login(userinfo));
           const res = await fetch(
-            "http://localhost:3000/api/orders/orderDelivered",
+            "http://18.118.197.9:3000/api/orders/orderDelivered",
             {
               headers: {
                 "Content-Type": "application/json",
