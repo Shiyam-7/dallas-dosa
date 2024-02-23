@@ -26,7 +26,7 @@ export default function Home() {
           <div className="flex">
             <p className=" text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-semibold">
               Step into <span className="text-amber-400">Dallas Dosa</span>{" "}
-              Where South Indian Flavors Come to Life."
+              Where South Indian Flavors Come 2 Life."
             </p>
           </div>
           <div className="flex ">
