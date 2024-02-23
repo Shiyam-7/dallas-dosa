@@ -17,7 +17,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://18.118.197.9:3000",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );

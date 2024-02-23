@@ -47,7 +47,7 @@ function Buttons({ order }) {
 
   const paymentRequest = async (id) => {
     try {
-      const res = await fetch("http://18.118.197.9:3000/api/orders/payment", {
+      const res = await fetch("http://localhost:3000/api/orders/payment", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -64,27 +64,24 @@ function Buttons({ order }) {
         try {
           console.log("2");
           const response = await axios.get(
-            "http://18.118.197.9:3000/api/refresh-token",
+            "http://localhost:3000/api/refresh-token",
             { withCredentials: true }
           );
           console.log(response);
           const userinfo = { ...response.data, user };
           dispatch(login(userinfo));
           console.log("3");
-          const res = await fetch(
-            "http://18.118.197.9:3000/api/orders/payment",
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${userinfo.accessToken}`,
-              },
-              credentials: "include",
-              method: "PATCH",
-              body: JSON.stringify({
-                paymentId: id,
-              }),
-            }
-          );
+          const res = await fetch("http://localhost:3000/api/orders/payment", {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userinfo.accessToken}`,
+            },
+            credentials: "include",
+            method: "PATCH",
+            body: JSON.stringify({
+              paymentId: id,
+            }),
+          });
           const data = await res.json();
           console.log(data);
           return data;

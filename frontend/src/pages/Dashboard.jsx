@@ -29,7 +29,7 @@ export default function Dashboard() {
     navigate("/sign-in");
     try {
       const response = await axios.post(
-        "http://18.118.197.9:3000/api/auth/logout",
+        "http://localhost:3000/api/auth/logout",
         {},
         { withCredentials: true }
       );

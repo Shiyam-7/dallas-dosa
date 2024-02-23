@@ -27,7 +27,7 @@ export default function SignIn() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://18.118.197.9:3000/api/auth/login",
+        "http://localhost:3000/api/auth/login",
         {
           email,
           password,
