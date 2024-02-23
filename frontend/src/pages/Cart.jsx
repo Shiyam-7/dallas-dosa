@@ -42,37 +42,34 @@ export default function Cart() {
   const handleOrder = async () => {
     try {
       setLoading(true);
-      const res = await fetch(
-        "https://dallas-dosa.onrender.com/api/orders/new-order",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          method: "POST",
-          credentials: "include",
-          body: JSON.stringify({
-            username: user.username,
-            address,
-            addressLatLng,
-            totalPrice,
-            products: cartItems,
-          }),
-        }
-      );
+      const res = await fetch("http://localhost:3000/api/orders/new-order", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify({
+          username: user.username,
+          address,
+          addressLatLng,
+          totalPrice,
+          products: cartItems,
+        }),
+      });
       const data = await res.json();
       console.log(data);
       if (data.msg === "jwt expired") {
         try {
           const response = await axios.get(
-            "https://dallas-dosa.onrender.com/api/refresh-token",
+            "http://localhost:3000/api/refresh-token",
             { withCredentials: true }
           );
           console.log(response);
           const userinfo = { ...response.data, user };
           dispatch(login(userinfo));
           const res = await fetch(
-            "https://dallas-dosa.onrender.com/api/orders/new-order",
+            "http://localhost:3000/api/orders/new-order",
             {
               headers: {
                 "Content-Type": "application/json",
@@ -130,7 +127,7 @@ export default function Cart() {
                   <div className="flex flex-shrink-0">
                     <img
                       className="flex w-[150px] h-[150px]  object-cover"
-                      src={`https://dallas-dosa.onrender.com/images/${product.imageLink}`}
+                      src={`http://localhost:3000/images/${product.imageLink}`}
                       alt="product image"
                     />
                   </div>

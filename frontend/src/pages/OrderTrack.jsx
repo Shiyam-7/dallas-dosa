@@ -21,7 +21,7 @@ export default function OrderTrack() {
     setLoading(true);
     try {
       const res = await fetch(
-        `https://dallas-dosa.onrender.com/api/orders/track-order/${id}`,
+        `http://localhost:3000/api/orders/track-order/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -35,7 +35,7 @@ export default function OrderTrack() {
         try {
           console.log("2");
           const response = await axios.get(
-            "https://dallas-dosa.onrender.com/api/refresh-token",
+            "http://localhost:3000/api/refresh-token",
             { withCredentials: true }
           );
           console.log(response);
@@ -43,7 +43,7 @@ export default function OrderTrack() {
           dispatch(login(userinfo));
           console.log("3");
           const res = await fetch(
-            `https://dallas-dosa.onrender.com/api/orders/track-order/${id}`,
+            `http://localhost:3000/api/orders/track-order/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${userinfo.accessToken}`,

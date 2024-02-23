@@ -4,6 +4,7 @@ import signup from "../assets/images/sign-up.png";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
+import Oauth from "../components/Oauth";
 
 export default function SignUP() {
   const [username, setUsername] = useState("");
@@ -23,7 +24,7 @@ export default function SignUP() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://dallas-dosa.onrender.com/api/auth/signup",
+        "http://localhost:3000/api/auth/signup",
         {
           username,
           email,
@@ -120,9 +121,12 @@ export default function SignUP() {
                   Loading...
                 </button>
               ) : (
-                <button className="w-auto bg-amber-400 hover:opacity-95 py-1 px-7 rounded-2xl">
-                  Login
-                </button>
+                <>
+                  <button className="w-auto bg-amber-400 hover:opacity-95 py-1 px-7 rounded-2xl">
+                    Login
+                  </button>
+                  <Oauth />
+                </>
               )}
               <p>
                 Returning user?{" "}

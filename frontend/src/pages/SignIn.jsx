@@ -8,6 +8,7 @@ import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { login } from "../redux/slices/authSlice.js";
+import Oauth from "../components/Oauth.jsx";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -26,7 +27,7 @@ export default function SignIn() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://dallas-dosa.onrender.com/api/auth/login",
+        "http://localhost:3000/api/auth/login",
         {
           email,
           password,
@@ -123,9 +124,12 @@ export default function SignIn() {
                   Loading...
                 </button>
               ) : (
-                <button className="w-auto bg-amber-400 hover:opacity-95 py-1 px-7 rounded-2xl">
-                  Login
-                </button>
+                <>
+                  <button className="w-auto bg-amber-400 hover:opacity-95 py-1 px-7 rounded-2xl">
+                    Login
+                  </button>
+                  <Oauth />
+                </>
               )}
 
               <p>
