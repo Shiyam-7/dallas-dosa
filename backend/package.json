@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm install",
     "start": "cd ../frontend && npm run build && rm -rf ../backend/public && mkdir -p ../backend/public && mv ./dist/* ../backend/public && cd ../backend && node index.js"
   },
   "keywords": [],
