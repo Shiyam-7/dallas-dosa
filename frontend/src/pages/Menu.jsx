@@ -19,7 +19,9 @@ export default function Menu() {
     setLoading(true);
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/products");
+        const response = await axios.get(
+          "http://18.118.197.9:3000/api/products"
+        );
         setProducts(response.data);
         setLoading(false);
       } catch (error) {
@@ -94,7 +96,7 @@ export default function Menu() {
                     <div className="flex">
                       <img
                         className="h-[250px] w-[300px] object-cover"
-                        src={`http://localhost:3000/images/${item.imageLink}`}
+                        src={`http://18.118.197.9:3000/images/${item.imageLink}`}
                         alt="food item cover image"
                       />
                     </div>
