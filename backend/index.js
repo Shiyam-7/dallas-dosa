@@ -17,7 +17,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://18.118.197.9:3000",
+    origin: "https://testing.dallasdosa.com",
     credentials: true,
   })
 );
