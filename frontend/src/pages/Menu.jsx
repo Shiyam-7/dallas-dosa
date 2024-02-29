@@ -38,6 +38,14 @@ export default function Menu() {
         <div className="my-10">
           <p className="text-4xl font-bold">Our Menu</p>
         </div>
+        <div className="my-3">
+          <Link to={"/"}>
+            <span className="">Home/</span>
+          </Link>
+          <Link to={"/category"}>
+            <span className="">Menu</span>
+          </Link>
+        </div>
         <div className="text-2xl font-bold">
           <p>Pick and Try out</p>
         </div>
@@ -70,7 +78,7 @@ export default function Menu() {
           </Link>
         </div>
       </div>
-      <div className="flex max-sm:flex-col flex-row sm:gap-5 justify-center items-center my-10">
+      <div className="flex flex-wrap justify-center items-center my-10">
         {loading ? (
           <div className="flex cursor-pointer text-2xl w-full justify-center gap-10 my-20 flex-wrap">
             <TailSpin // Type of spinner
@@ -81,10 +89,7 @@ export default function Menu() {
           </div>
         ) : products.length !== 0 ? (
           products.map((item) => (
-            <div
-              key={item._id}
-              className="flex cursor-pointer  justify-center  "
-            >
+            <div key={item._id} className="flex cursor-pointer  justify-center">
               {item.category === category && (
                 <div
                   onClick={() => {
@@ -92,7 +97,7 @@ export default function Menu() {
                   }}
                   className="flex "
                 >
-                  <div className="flex  flex-col p-3 text-white">
+                  <div className="flex flex-col p-3 text-white">
                     <div className="flex">
                       <img
                         className="h-[250px] w-[300px] object-cover"
@@ -114,12 +119,12 @@ export default function Menu() {
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center justify-center">
-                        {/* <button className="flex border border-white rounded-md items-center p-1 font-semibold text-sm">
+                      {/* <div className="flex items-center justify-center">
+                        <button className="flex border border-white rounded-md items-center p-1 font-semibold text-sm">
                         ADD
                         <MdAdd className="fill-white" />
-                      </button> */}
-                      </div>
+                      </button> 
+                      </div> */}
                     </div>
                   </div>
                 </div>

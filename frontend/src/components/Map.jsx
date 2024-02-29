@@ -68,9 +68,9 @@ function FindButtonAndMarker({ readonly, location, onChange }) {
   return (
     <>
       {!readonly && (
-        <div className="flex  rounded-full border-2 w-full absolute z-[1000] text-amber-400 text-center font-semibold justify-center bg-white">
+        <div className="flex  rounded-full border-2 border-amber-400 cursor-pointer ml-24 p-2 absolute z-[1000] text-amber-400 text-center font-semibold justify-center bg-white">
           <button type="button" onClick={() => map.locate()}>
-            click here to find your Location
+            Tap here to find your Location
           </button>
         </div>
       )}

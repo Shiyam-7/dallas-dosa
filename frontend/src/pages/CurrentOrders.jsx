@@ -153,7 +153,7 @@ export default function CurrentOrders() {
                       <span className="text-xl mr-2 font-semibold">
                         Order ID:
                       </span>{" "}
-                      <span className=" font-mono text-sm">{order.id}</span>
+                      <span className=" font-mono text-sm">{order._id}</span>
                     </p>
                   </div>
                   <div className="">
@@ -171,7 +171,9 @@ export default function CurrentOrders() {
                       <span className="text-xl mr-2 font-semibold">
                         Customer Name:
                       </span>{" "}
-                      <span className=" font-mono text-sm">{order.name}</span>
+                      <span className=" font-mono text-sm">
+                        {order.username}
+                      </span>
                     </p>
                   </div>
                   <div className="">
