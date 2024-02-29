@@ -59,13 +59,6 @@ export default function Menu() {
       </div>
       <div className="flex mt-16  items-center w-full px-3 justify-between ">
         <div className="flex border border-amber-400 py-1 px-10 items-center gap-3">
-          <div className="max-md:hidden">
-            <img
-              className="h-[100px] object-cover"
-              src={regularDosa}
-              alt="dosa category image"
-            />
-          </div>
           <div className="">
             <p className="text-xl font-semibold">
               {category.charAt(0).toUpperCase() + category.slice(1)}

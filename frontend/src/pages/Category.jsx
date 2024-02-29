@@ -56,13 +56,7 @@ export default function Category() {
               className="flex gap-10 max-md:w-[70%] border border-amber-400 w-[35%] justify-center mx-auto my-10"
             >
               <div className="flex cursor-pointer py-2  items-center gap-5">
-                <div className="">
-                  <img
-                    className="h-[100px] object-cover "
-                    src={regularDosa}
-                    alt="dosa category image"
-                  />
-                </div>
+                <div className=""></div>
                 <div className="">
                   <p className="text-lg sm:text-xl xl:text-2xl font-semibold">
                     {category.name}
