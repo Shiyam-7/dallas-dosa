@@ -35,7 +35,7 @@ export default function Menu() {
   return (
     <div className="flex flex-col text-white">
       <div className="flex gap-2 flex-col w-full items-center justify-center text-center">
-        <div className="my-10">
+        <div className="mt-10">
           <p className="text-4xl font-bold">Our Menu</p>
         </div>
         <div className="my-3">
