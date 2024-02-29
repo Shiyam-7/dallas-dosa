@@ -21,4 +21,4 @@ jobs:
           chmod 700 keyfile
           mkdir -p ~/.ssh
           cp known_hosts ~/.ssh/known_hosts
-          ssh -t -i keyfile ubuntu@18.119.100.147	 "sudo bash ~/deploy.sh"
+          ssh -t -i keyfile ubuntu@3.128.29.184	 "sudo bash ~/deploy.sh"
